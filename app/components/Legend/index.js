@@ -1,22 +1,21 @@
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { uid } from 'react-uid';
-import * as d3 from 'd3';
+import Key from './Key';
+import Wrapper from './Wrapper';
 
-class Legend extends React.Component {
-  _keys = this.props.data.map(({ name, color }) => ({
-    name,
-    color,
-  }));
-
-  render() {
-    return <>hello</>;
-  }
-}
+const Legend = ({ data = [] }) => (
+  <>
+    {data.map(k => (
+      <Wrapper key={uid(k)}>
+        <Key {...k} />
+      </Wrapper>
+    ))}
+  </>
+);
 
 Legend.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
 };
 
 export default Legend;

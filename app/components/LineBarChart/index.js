@@ -1,127 +1,106 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { uid } from 'react-uid';
 import * as d3 from 'd3';
-import Svg from './Svg';
-import XTick from './XTick';
-import YTick from './YTick';
-import XAxis from './XAxis';
-import YAxis from './YAxis';
-import Line from './Line';
+import moment from 'moment';
+import numeral from 'numeral';
+
+import LineBar from './LineBar';
+import Legend from '../Legend';
 
 class LineBarChart extends React.Component {
   static defaultProps = {
     margin: 20,
-    width: 500,
-    height: 250,
+    width: 800,
+    height: 450,
   };
 
-  _innerWidth = this.props.width - 2 * this.props.margin;
+  innerWidth = this.props.width - 2 * this.props.margin;
 
-  _innerHeight = this.props.height - 2 * this.props.margin;
+  innerHeight = this.props.height - 2 * this.props.margin;
+
+  domain = this.props.data
+    .map(datum => datum.values)
+    .reduce((arr, el) => arr.concat(el), []);
 
   state = {
     xScale: d3
       .scaleLinear()
-      .domain(d3.extent(this.props.data.values, d => d.a))
-      .range([this.props.margin, this._innerWidth]),
+      .domain(d3.extent(this.domain, d => d.a))
+      .range([this.props.margin, this.innerWidth]),
 
     yScale: d3
       .scaleLinear()
-      .domain([0, d3.max(this.props.data.values, d => d.b)])
-      .range([this._innerHeight, this.props.margin]),
+      .domain([0, d3.max(this.domain, d => d.b)])
+      .range([this.innerHeight, this.props.margin]),
 
-    line: d3
+    lineGenerator: d3
       .line()
       .x(d => this.state.xScale(d.a))
       .y(d => this.state.yScale(d.b))
       .curve(d3.curveCatmullRom.alpha(0.5)),
 
-    xFormat: d3.format('.2'),
-    yFormat: d3.format('.2'),
+    xFormat: date => moment.utc(date).format('YYYY'),
+
+    yFormat: val => numeral(val).format('0a'),
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { xScale, yScale, line } = prevState;
+    // data hasn't been loaded yet so do nothing
+    if (!nextProps.data) return null;
+
+    const { xScale, yScale, lineGenerator } = prevState;
+    const domain = nextProps.data
+      .map(datum => datum.values)
+      .reduce((arr, el) => arr.concat(el), []);
 
     xScale
-      .domain(d3.extent(nextProps.data.values, d => d.a)) // domain: [min,max] of a
+      .domain(d3.extent(domain, d => d.a))
       .range([nextProps.margin, nextProps.width - 2 * nextProps.margin]);
 
     yScale
-      .domain([0, d3.max(nextProps.data.values, d => d.b)]) // domain [0,max] of b (start from 0)
+      .domain([0, d3.max(domain, d => d.b)])
       .range([nextProps.height - 2 * nextProps.margin, nextProps.margin]);
 
-    line
+    lineGenerator
       .x(d => xScale(d.a))
       .y(d => yScale(d.b))
       .curve(d3.curveCatmullRom.alpha(0.5));
 
     // eslint-disable-next-line no-param-reassign
-    prevState = { ...prevState, xScale, yScale, line };
+    prevState = { ...prevState, xScale, yScale, lineGenerator };
     return prevState;
   }
 
   render() {
-    const { _innerWidth, _innerHeight } = this;
+    const { innerWidth, innerHeight } = this;
     const { data, width, height, margin } = this.props;
-    const { xScale, yScale, line, xFormat, yFormat } = this.state;
+    const { xScale, yScale, lineGenerator, xFormat, yFormat } = this.state;
 
-    const xTicks = xScale
-      .ticks(data.values.length)
-      .map(
-        d =>
-          xScale(d) > margin && xScale(d) < _innerWidth ? (
-            <XTick
-              key={uid(d)}
-              datum={d}
-              margin={margin}
-              size={_innerHeight}
-              scale={xScale}
-              format={xFormat}
-            />
-          ) : null,
-      );
-
-    const yTicks = yScale
-      .ticks(data.values.length)
-      .map(
-        d =>
-          yScale(d) > 10 && yScale(d) < height ? (
-            <YTick
-              key={uid(d)}
-              datum={d}
-              margin={margin}
-              size={_innerWidth}
-              scale={yScale}
-              format={yFormat}
-            />
-          ) : null,
-      );
+    const config = {
+      width,
+      height,
+      margin,
+      xScale,
+      yScale,
+      xFormat,
+      yFormat,
+      lineGenerator,
+      innerWidth,
+      innerHeight,
+    };
 
     return (
-      <Svg width={width} height={height}>
-        <XAxis
-          ticks={xTicks}
-          margin={margin}
-          width={_innerWidth}
-          height={_innerHeight}
-        />
-        <YAxis
-          ticks={yTicks}
-          margin={margin}
-          width={_innerWidth}
-          height={_innerHeight}
-        />
-        {data.type === 'line' && <Line generator={line} source={data.values} />}
-      </Svg>
+      <>
+        <Legend data={data} />
+        <LineBar data={data} config={config} />
+      </>
     );
   }
 }
 
 LineBarChart.propTypes = {
-  data: PropTypes.any.isRequired,
+  data: PropTypes.array.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
   margin: PropTypes.number,

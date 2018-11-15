@@ -5,7 +5,6 @@ const Svg = styled.svg`
   fill-opacity: 0.3;
 
   path {
-    stroke: steelblue;
     stroke-width: 2px;
     fill: none;
   }
