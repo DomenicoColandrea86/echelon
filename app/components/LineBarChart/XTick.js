@@ -9,7 +9,7 @@ const XTick = ({ datum, margin, size, scale, format }) => (
 );
 
 XTick.propTypes = {
-  datum: PropTypes.number.isRequired,
+  datum: PropTypes.instanceOf(Date).isRequired,
   scale: PropTypes.func.isRequired,
   format: PropTypes.func.isRequired,
   margin: PropTypes.number.isRequired,

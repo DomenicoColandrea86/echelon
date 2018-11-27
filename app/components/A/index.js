@@ -1,14 +1,11 @@
-/**
- * A link to a certain page, an anchor tag
- */
-
 import styled from 'styled-components';
+import { gold } from '../../utils/colors';
 
 const A = styled.a`
-  color: #41addd;
-
+  color: ${gold};
+  text-decoration: none;
   &:hover {
-    color: #6cc0e5;
+    text-decoration: underline;
   }
 `;
 

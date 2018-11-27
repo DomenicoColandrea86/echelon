@@ -5,7 +5,7 @@ import {
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
-  makeSelectRepos,
+  makeSelectTrends,
   makeSelectLocation,
 } from '../selectors';
 
@@ -58,18 +58,18 @@ describe('makeSelectError', () => {
   });
 });
 
-describe('makeSelectRepos', () => {
-  const reposSelector = makeSelectRepos();
-  it('should select the repos', () => {
-    const repositories = fromJS([]);
+describe('makeSelectTrends', () => {
+  const trendsSelector = makeSelectTrends();
+  it('should select the trends', () => {
+    const trends = fromJS([]);
     const mockedState = fromJS({
       global: {
         userData: {
-          repositories,
+          trends,
         },
       },
     });
-    expect(reposSelector(mockedState)).toEqual(repositories);
+    expect(trendsSelector(mockedState)).toEqual(trends);
   });
 });
 

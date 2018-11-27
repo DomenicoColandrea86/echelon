@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LineBarChart from './index';
 
 const Line = ({ source = [], generator, color }) => (
-  <path d={generator(source)} stroke={color} />
+  <path
+    className={LineBarChart.selectSVGPaths}
+    d={generator(source)}
+    stroke={color}
+  />
 );
 
 Line.propTypes = {

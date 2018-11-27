@@ -1,40 +1,33 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
 
-import H1 from '../H1';
-// import A from './A';
-// import Img from './Img';
-import NavBar from './NavBar';
-import HeaderLink from './HeaderLink';
-// import Banner from './banner.jpg';
-import messages from './messages';
+const Header = ({
+  showSideNav,
+  isMobileNavFolded,
+  onMobileNavToggle,
+  isSideFolded,
+  onSideToggle,
+}) => (
+  <div>
+    <Navbar
+      showSideNav={showSideNav}
+      isSideFolded={isSideFolded}
+      isMobileNavFolded={isMobileNavFolded}
+      onSideToggle={onSideToggle}
+      onMobileNavToggle={onMobileNavToggle}
+    />
+    {showSideNav !== false && <Sidebar isFolded={isSideFolded} />}
+  </div>
+);
 
-/* eslint-disable react/prefer-stateless-function */
-class Header extends React.Component {
-  render() {
-    return (
-      <div>
-        {/* <A href="https://twitter.com/mxstbr">
-          <Img src={Banner} alt="react-boilerplate - Logo" />
-        </A> */}
-        <NavBar>
-          <H1>TrendTracker</H1>
-          <HeaderLink to="/">
-            <FormattedMessage {...messages.charts} />
-          </HeaderLink>
-          <HeaderLink to="/features">
-            <FormattedMessage {...messages.data} />
-          </HeaderLink>
-          <HeaderLink to="/">
-            <FormattedMessage {...messages.definitions} />
-          </HeaderLink>
-          <HeaderLink to="/">
-            <FormattedMessage {...messages.supportingDocs} />
-          </HeaderLink>
-        </NavBar>
-      </div>
-    );
-  }
-}
+Header.propTypes = {
+  onSideToggle: PropTypes.func,
+  onMobileNavToggle: PropTypes.func,
+  isSideFolded: PropTypes.bool,
+  isMobileNavFolded: PropTypes.bool,
+  showSideNav: PropTypes.bool,
+};
 
 export default Header;

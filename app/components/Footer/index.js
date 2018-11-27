@@ -1,32 +1,38 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import styled, { css } from 'styled-components';
 
-import A from 'components/A';
-import LocaleToggle from 'containers/LocaleToggle';
-import Wrapper from './Wrapper';
-import messages from './messages';
+import { Content } from '../Layout';
+import rem from '../../utils/rem';
+import { mobile } from '../../utils/media';
+import { grey, paleGrey } from '../../utils/colors';
+import Emoji from '../Emoji';
 
-function Footer() {
-  return (
-    <Wrapper>
-      <section>
-        <FormattedMessage {...messages.licenseMessage} />
-      </section>
-      <section>
-        <LocaleToggle />
-      </section>
-      <section>
-        <FormattedMessage
-          {...messages.authorMessage}
-          values={{
-            author: (
-              <A href="https://twitter.com/domcocolala">Domenico Colandrea</A>
-            ),
-          }}
-        />
-      </section>
-    </Wrapper>
-  );
-}
+const Wrapper = styled.footer`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: ${grey};
+  background: ${paleGrey};
+  box-sizing: border-box;
+  margin-top: ${rem(50)};
+`;
+
+const FooterContent = styled(Content)`
+  padding: ${rem(30)} ${rem(40)} ${rem(30)} ${rem(40)};
+
+  ${mobile(css`
+    padding: ${rem(30)} ${rem(20)} ${rem(30)} ${rem(20)};
+  `)};
+`;
+
+const Footer = () => (
+  <Wrapper>
+    <FooterContent hero>
+      copyright 2018 <Emoji symbol="🔥" label="fire" />
+    </FooterContent>
+  </Wrapper>
+);
 
 export default Footer;

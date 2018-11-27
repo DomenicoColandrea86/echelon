@@ -121,20 +121,16 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      name: 'React Boilerplate',
-      short_name: 'React BP',
-      description: 'My React Boilerplate-based project!',
+      name: 'TrendTracker',
+      short_name: 'Trends',
+      description: 'Trend Tracker',
       background_color: '#fafafa',
       theme_color: '#b1624d',
       inject: true,
       ios: true,
       icons: [
         {
-          src: path.resolve('app/images/icon-512x512.png'),
-          sizes: [72, 96, 128, 144, 192, 384, 512],
-        },
-        {
-          src: path.resolve('app/images/icon-512x512.png'),
+          src: path.resolve('app/static/apple-touch-icon.png'),
           sizes: [120, 152, 167, 180],
           ios: true,
         },

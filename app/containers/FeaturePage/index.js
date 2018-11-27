@@ -25,10 +25,7 @@ export default class FeaturePage extends React.Component {
       <div>
         <Helmet>
           <title>Feature Page</title>
-          <meta
-            name="description"
-            content="Feature page of React.js Boilerplate application"
-          />
+          <meta name="description" content="Data Page" />
         </Helmet>
         <H1>
           <FormattedMessage {...messages.header} />

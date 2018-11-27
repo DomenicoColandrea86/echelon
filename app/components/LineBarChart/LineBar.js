@@ -1,8 +1,6 @@
-/* eslint-disable no-underscore-dangle */
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { uid } from 'react-uid';
-
 import Svg from './Svg';
 import XTick from './XTick';
 import YTick from './YTick';
@@ -44,34 +42,34 @@ const yTicks = ({ yScale, height, margin, innerWidth, yFormat }) =>
         ) : null,
     );
 
-const LineBar = ({ data = [], config }) => (
-  <Svg width={config.width} height={config.height}>
+const LineBar = memo(({ data = [], options }) => (
+  <Svg width={options.width} height={options.height}>
     <XAxis
-      ticks={xTicks(config)}
-      margin={config.margin}
-      width={config.innerWidth}
-      height={config.innerHeight}
+      ticks={xTicks(options)}
+      margin={options.margin}
+      width={options.innerWidth}
+      height={options.innerHeight}
     />
     <YAxis
-      ticks={yTicks(config)}
-      margin={config.margin}
-      width={config.innerWidth}
-      height={config.innerHeight}
+      ticks={yTicks(options)}
+      margin={options.margin}
+      width={options.innerWidth}
+      height={options.innerHeight}
     />
     {data.map(datum => (
       <Line
         key={uid(datum)}
-        generator={config.lineGenerator}
+        generator={options.lineGenerator}
         source={datum.values}
         color={datum.color}
       />
     ))}
   </Svg>
-);
+));
 
 LineBar.propTypes = {
   data: PropTypes.any.isRequired,
-  config: PropTypes.any.isRequired,
+  options: PropTypes.any.isRequired,
 };
 
 export default LineBar;

@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 
 import appReducer from '../reducer';
-import { loadRepos, reposLoaded, repoLoadingError } from '../actions';
+import { loadTrends, trendsLoaded, trendsLoadingError } from '../actions';
 
 describe('appReducer', () => {
   let state;
@@ -11,7 +11,7 @@ describe('appReducer', () => {
       error: false,
       currentUser: false,
       userData: fromJS({
-        repositories: false,
+        trends: false,
       }),
     });
   });
@@ -21,39 +21,35 @@ describe('appReducer', () => {
     expect(appReducer(undefined, {})).toEqual(expectedResult);
   });
 
-  it('should handle the loadRepos action correctly', () => {
+  it('should handle the loadTrends action correctly', () => {
     const expectedResult = state
       .set('loading', true)
       .set('error', false)
-      .setIn(['userData', 'repositories'], false);
+      .setIn(['userData', 'trends'], false);
 
-    expect(appReducer(state, loadRepos())).toEqual(expectedResult);
+    expect(appReducer(state, loadTrends())).toEqual(expectedResult);
   });
 
-  it('should handle the reposLoaded action correctly', () => {
+  it('should handle the trendsLoaded action correctly', () => {
     const fixture = [
       {
-        name: 'My Repo',
+        name: 'My Trend',
       },
     ];
-    const username = 'test';
     const expectedResult = state
-      .setIn(['userData', 'repositories'], fixture)
-      .set('loading', false)
-      .set('currentUser', username);
+      .setIn(['userData', 'trends'], fixture)
+      .set('loading', false);
 
-    expect(appReducer(state, reposLoaded(fixture, username))).toEqual(
-      expectedResult,
-    );
+    expect(appReducer(state, trendsLoaded(fixture))).toEqual(expectedResult);
   });
 
-  it('should handle the repoLoadingError action correctly', () => {
+  it('should handle the trendsLoadingError action correctly', () => {
     const fixture = {
       msg: 'Not found',
     };
     const expectedResult = state.set('error', fixture).set('loading', false);
 
-    expect(appReducer(state, repoLoadingError(fixture))).toEqual(
+    expect(appReducer(state, trendsLoadingError(fixture))).toEqual(
       expectedResult,
     );
   });
