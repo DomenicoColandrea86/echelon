@@ -22,6 +22,10 @@ import saga from './saga';
 import LoadingIndicator from '../../components/LoadingIndicator';
 
 export class HomePage extends React.PureComponent {
+  componentDidMount() {
+    this.props.onLoadTrends();
+  }
+
   render() {
     const { loading, error, trends } = this.props;
     return (
@@ -52,6 +56,7 @@ HomePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   trends: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  onLoadTrends: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
