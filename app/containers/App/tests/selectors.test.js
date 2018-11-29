@@ -2,7 +2,6 @@ import { fromJS } from 'immutable';
 
 import {
   selectGlobal,
-  makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
   makeSelectTrends,
@@ -16,19 +15,6 @@ describe('selectGlobal', () => {
       global: globalState,
     });
     expect(selectGlobal(mockedState)).toEqual(globalState);
-  });
-});
-
-describe('makeSelectCurrentUser', () => {
-  const currentUserSelector = makeSelectCurrentUser();
-  it('should select the current user', () => {
-    const username = 'mxstbr';
-    const mockedState = fromJS({
-      global: {
-        currentUser: username,
-      },
-    });
-    expect(currentUserSelector(mockedState)).toEqual(username);
   });
 });
 
@@ -61,15 +47,15 @@ describe('makeSelectError', () => {
 describe('makeSelectTrends', () => {
   const trendsSelector = makeSelectTrends();
   it('should select the trends', () => {
-    const trends = fromJS([]);
+    const data = fromJS([]);
     const mockedState = fromJS({
       global: {
-        userData: {
-          trends,
+        charts: {
+          data,
         },
       },
     });
-    expect(trendsSelector(mockedState)).toEqual(trends);
+    expect(trendsSelector(mockedState)).toEqual(data);
   });
 });
 

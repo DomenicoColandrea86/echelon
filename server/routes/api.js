@@ -1,13 +1,17 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
-const API = require('../api');
+const Api = require('../api');
 
 // API routes
 const APIRouter = middleware => {
   // create router instance
   const router = express.Router();
   // routes
-  router.get('/trends', API.Trends.list);
+  router.get('/geos', Api.Geos.read);
+  router.get('/aggs', Api.Aggs.read);
+  router.get('/trends', Api.Trends.read);
+  router.get('/propTypes', Api.PropTypes.read);
+
   return router;
 };
 

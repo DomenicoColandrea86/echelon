@@ -16,13 +16,7 @@ export function* getTrends() {
   }
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
+// Root saga
 export default function* trendsData() {
-  // Watches for LOAD_TRENDS actions and calls getTrends when one comes in.
-  // By using `takeLatest` only the result of the latest API call is applied.
-  // It returns task descriptor (just like fork) so we can continue execution
-  // It will be cancelled automatically on component unmount
   yield takeLatest(LOAD_TRENDS, getTrends);
 }

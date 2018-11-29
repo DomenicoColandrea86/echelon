@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 const chalk = require('chalk');
 const ip = require('ip');
 
@@ -16,7 +15,9 @@ const logger = {
 
   // Called when express.js app starts on given port w/o errors
   appStarted: (port, host, tunnelStarted) => {
-    console.log(`Server started ! ${chalk.green('✓')}`);
+    console.log(divider);
+    console.log(`\n🔥  API Server started`);
+    console.log(divider);
 
     // If the tunnel started, log that and the URL it's available at
     if (tunnelStarted) {
@@ -24,7 +25,7 @@ const logger = {
     }
 
     console.log(`
-${chalk.bold('Access URLs:')}${divider}
+${chalk.bold('💁  Access URLs:')}${divider}
 Localhost: ${chalk.magenta(`http://${host}:${port}`)}
       LAN: ${chalk.magenta(`http://${ip.address()}:${port}`) +
         (tunnelStarted

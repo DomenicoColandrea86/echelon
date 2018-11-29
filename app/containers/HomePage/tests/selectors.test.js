@@ -5,7 +5,7 @@ import { selectHome } from '../selectors';
 describe('selectHome', () => {
   it('should select the home state', () => {
     const homeState = fromJS({
-      userData: {},
+      charts: {},
     });
     const mockedState = fromJS({
       home: homeState,

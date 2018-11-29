@@ -1,15 +1,4 @@
-/*
- * AppReducer
- *
- * The reducer takes care of our data. Using actions, we can change our
- * application state.
- * To add a new action, add it to the switch statement in the reducer function
- *
- * Example:
- * case YOUR_ACTION_CONSTANT:
- *   return state.set('yourStateVariable', true);
- */
-
+/* eslint-disable react/forbid-foreign-prop-types */
 import { fromJS } from 'immutable';
 
 import {
@@ -22,9 +11,8 @@ import {
 const initialState = fromJS({
   loading: false,
   error: false,
-  currentUser: false,
-  userData: {
-    trends: false,
+  charts: {
+    data: false,
   },
 });
 
@@ -34,10 +22,10 @@ function appReducer(state = initialState, action) {
       return state
         .set('loading', true)
         .set('error', false)
-        .setIn(['userData', 'trends'], false);
+        .setIn(['charts', 'data'], false);
     case LOAD_TRENDS_SUCCESS:
       return state
-        .setIn(['userData', 'trends'], action.trends)
+        .setIn(['charts', 'data'], action.trends)
         .set('loading', false);
     case LOAD_TRENDS_ERROR:
       return state.set('error', action.error).set('loading', false);

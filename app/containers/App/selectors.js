@@ -8,9 +8,6 @@ const selectGlobal = state => state.get('global');
 
 const selectRouter = state => state.get('router');
 
-const makeSelectCurrentUser = () =>
-  createSelector(selectGlobal, globalState => globalState.get('currentUser'));
-
 const makeSelectLoading = () =>
   createSelector(selectGlobal, globalState => globalState.get('loading'));
 
@@ -19,7 +16,22 @@ const makeSelectError = () =>
 
 const makeSelectTrends = () =>
   createSelector(selectGlobal, globalState =>
-    globalState.getIn(['userData', 'trends']),
+    globalState.getIn(['charts', 'data']),
+  );
+
+const makeSelectPropTypes = () =>
+  createSelector(selectGlobal, globalState =>
+    globalState.getIn(['filters', 'propTypes']),
+  );
+
+const makeSelectGeos = () =>
+  createSelector(selectGlobal, globalState =>
+    globalState.getIn(['filters', 'geos']),
+  );
+
+const makeSelectAggs = () =>
+  createSelector(selectGlobal, globalState =>
+    globalState.getIn(['filters', 'aggs']),
   );
 
 const makeSelectLocation = () =>
@@ -29,9 +41,11 @@ const makeSelectLocation = () =>
 
 export {
   selectGlobal,
-  makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
   makeSelectLocation,
   makeSelectTrends,
+  makeSelectPropTypes,
+  makeSelectAggs,
+  makeSelectGeos,
 };

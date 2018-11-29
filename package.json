@@ -1,6 +1,6 @@
 {
-  "name": "trendtracker",
-  "version": "2.0.0",
+  "name": "trends",
+  "version": "1.0.0",
   "description": "App to compare several different pricing and volume metrics across hundreds of global markets.",
   "repository": {
     "type": "git",

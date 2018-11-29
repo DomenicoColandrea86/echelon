@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Navbar from './Navbar';
-import Sidebar from './Sidebar';
+import FilterBarShelf from '../../containers/FilterBarShelf/index';
 
 const Header = ({
   showSideNav,
@@ -18,7 +18,7 @@ const Header = ({
       onSideToggle={onSideToggle}
       onMobileNavToggle={onMobileNavToggle}
     />
-    {showSideNav !== false && <Sidebar isFolded={isSideFolded} />}
+    {showSideNav !== false && <FilterBarShelf isFolded={isSideFolded} />}
   </div>
 );
 

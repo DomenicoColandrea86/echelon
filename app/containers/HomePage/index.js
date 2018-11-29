@@ -1,10 +1,5 @@
+/* eslint-disable react/forbid-foreign-prop-types */
 /* eslint-disable consistent-return */
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -24,7 +19,6 @@ import Section from './Section';
 import { loadTrends } from '../App/actions';
 import reducer from './reducer';
 import saga from './saga';
-import Button from '../../components/Button';
 import LoadingIndicator from '../../components/LoadingIndicator';
 
 export class HomePage extends React.PureComponent {
@@ -37,15 +31,12 @@ export class HomePage extends React.PureComponent {
           <meta name="description" content="Trend Tracker" />
         </Helmet>
         <Section>
-          {!trends && (
-            <Button onClick={this.props.onLoadTrends}>Load Trends</Button>
-          )}
           {(() => {
             if (loading !== false) {
               return <LoadingIndicator />;
             }
             if (error !== false) {
-              return <>{error}</>;
+              return <>{error || 'Oops! There was an error. '}</>;
             }
             if (trends !== false) {
               return <LineBarChart data={trends} />;
@@ -61,7 +52,6 @@ HomePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   trends: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  onLoadTrends: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -84,8 +74,8 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'home', reducer });
-const withSaga = injectSaga({ key: 'home', saga });
+const withReducer = injectReducer({ key: 'charts', reducer });
+const withSaga = injectSaga({ key: 'charts', saga });
 
 export default compose(
   withReducer,

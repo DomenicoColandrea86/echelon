@@ -9,9 +9,13 @@ describe('appReducer', () => {
     state = fromJS({
       loading: false,
       error: false,
-      currentUser: false,
-      userData: fromJS({
-        trends: false,
+      filters: fromJS({
+        geos: false,
+        aggs: false,
+        propTypes: false,
+      }),
+      charts: fromJS({
+        data: false,
       }),
     });
   });
@@ -25,7 +29,7 @@ describe('appReducer', () => {
     const expectedResult = state
       .set('loading', true)
       .set('error', false)
-      .setIn(['userData', 'trends'], false);
+      .setIn(['charts', 'trends'], false);
 
     expect(appReducer(state, loadTrends())).toEqual(expectedResult);
   });
@@ -37,7 +41,7 @@ describe('appReducer', () => {
       },
     ];
     const expectedResult = state
-      .setIn(['userData', 'trends'], fixture)
+      .setIn(['charts', 'trends'], fixture)
       .set('loading', false);
 
     expect(appReducer(state, trendsLoaded(fixture))).toEqual(expectedResult);

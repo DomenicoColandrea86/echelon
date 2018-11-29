@@ -88,7 +88,7 @@ app.get('*.js', (req, res, next) => {
   next();
 });
 
-// Start your app.
+// Start app.
 app.listen(port, host, async err => {
   if (err) {
     return logger.error(err.message);
