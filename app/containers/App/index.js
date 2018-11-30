@@ -7,7 +7,7 @@ import Footer from 'components/Footer';
 import { Container, Content } from 'components/Layout';
 import GlobalStyle from '../../global-styles';
 
-import HomePage from '../HomePage/Loadable';
+import ChartsPage from '../ChartsPage/Loadable';
 import FeaturePage from '../FeaturePage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 
@@ -47,7 +47,7 @@ class App extends React.PureComponent {
         <Container>
           <Content>
             <Switch>
-              <Route exact path="/" component={HomePage} />
+              <Route exact path="/" component={ChartsPage} />
               <Route path="/features" component={FeaturePage} />
               <Route path="" component={NotFoundPage} />
             </Switch>

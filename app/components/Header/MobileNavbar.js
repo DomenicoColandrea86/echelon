@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { KeyboardArrowDown } from 'styled-icons/material';
 import { Link } from 'react-router-dom';
 import rem from '../../utils/rem';
-import { paleGrey } from '../../utils/colors';
+import { paleGrey, grey, darkBlue } from '../../utils/colors';
 import { navbarHeight } from '../../utils/sizes';
 import { mobile } from '../../utils/media';
 import { CloseIcon, FoldIcon } from './NavIcons';
@@ -49,7 +49,7 @@ const SecondaryMenu = styled.div`
   overflow-y: hidden;
 
   background: ${paleGrey};
-  color: #868686;
+  color: ${grey};
 `;
 
 const LogoLink = styled(Link).attrs({
@@ -64,6 +64,7 @@ const LogoLink = styled(Link).attrs({
 
 const ArrowWrapper = styled.div`
   transition: transform 0.2s;
+  color: ${darkBlue};
 
   ${p =>
     p.shouldRotate &&

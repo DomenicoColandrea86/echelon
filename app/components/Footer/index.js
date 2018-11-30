@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { Content } from '../Layout';
 import rem from '../../utils/rem';
 import { mobile } from '../../utils/media';
-import { grey, paleGrey } from '../../utils/colors';
+import { charcoal, lightPaleGrey } from '../../utils/colors';
 import Emoji from '../Emoji';
 
 const Wrapper = styled.footer`
@@ -13,8 +13,8 @@ const Wrapper = styled.footer`
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: ${grey};
-  background: ${paleGrey};
+  color: ${charcoal};
+  background: ${lightPaleGrey};
   box-sizing: border-box;
   margin-top: ${rem(50)};
 `;

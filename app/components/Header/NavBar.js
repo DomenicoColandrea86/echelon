@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import rem from '../../utils/rem';
-import { englishLavender } from '../../utils/colors';
+import { orange } from '../../utils/colors';
 import { navbarHeight } from '../../utils/sizes';
 import { headerFont } from '../../utils/fonts';
 import { mobile } from '../../utils/media';
@@ -25,7 +25,8 @@ const Wrapper = styled.nav`
   font-family: ${headerFont};
   font-size: ${rem(15)};
   font-weight: 500;
-  background: ${englishLavender};
+  background: white;
+  border-bottom: 3px solid ${orange};
   transition: background 300ms ease-out;
   color: white;
   padding: 0;

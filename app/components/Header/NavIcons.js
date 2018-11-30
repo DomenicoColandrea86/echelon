@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ghostWhite } from '../../utils/colors';
+import { darkBlue } from '../../utils/colors';
 
 const Svg = styled.svg`
   svg {
@@ -21,7 +21,7 @@ export const CloseIcon = () => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
   >
     <title>close</title>
-    <use fill={ghostWhite} xlinkHref="#close" transform="translate(1 1)" />
+    <use fill={darkBlue} xlinkHref="#close" transform="translate(1 1)" />
     <defs>
       <path
         id="close"
@@ -39,7 +39,7 @@ export const FoldIcon = () => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
   >
     <title>fold</title>
-    <use fill={ghostWhite} xlinkHref="#fold" transform="translate(0 1)" />
+    <use fill={darkBlue} xlinkHref="#fold" transform="translate(0 1)" />
     <defs>
       <path id="fold" d="M0 1h17v-2H0v2zm17 4H0v2h17V5zM0 13h17v-2H0v2z" />
     </defs>
@@ -54,7 +54,7 @@ export const ArrowIcon = () => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
   >
     <title>arrow down</title>
-    <use fill={ghostWhite} xlinkHref="#menuArrow" transform="translate(1 1)" />
+    <use fill={darkBlue} xlinkHref="#menuArrow" transform="translate(1 1)" />
     <defs>
       <path
         id="menuArrow"

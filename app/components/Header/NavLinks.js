@@ -1,13 +1,12 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import rem from '../../utils/rem';
-import { mobile } from '../../utils/media';
 import { navbarHeight } from '../../utils/sizes';
 import NavSeparator from './NavSeparator';
-import { ghostWhite, oldLavender } from '../../utils/colors';
+import { grey, charcoal, paleGrey } from '../../utils/colors';
 
 const Wrapper = styled.nav`
   display: flex;
@@ -16,46 +15,53 @@ const Wrapper = styled.nav`
   margin-right: ${rem(30)};
 `;
 
-const NavLink = styled(Link)`
+const Link = styled(NavLink)`
   flex: 0 0 auto;
   display: inline-block;
   line-height: ${rem(navbarHeight)};
+  height: ${rem(navbarHeight - 4)};
   transition: opacity 0.2s, transform 0.2s;
   cursor: pointer;
   letter-spacing: ${rem(0.4)};
   text-transform: uppercase;
-  color: ${ghostWhite};
-  ${mobile(css`
-    color: ${oldLavender};
-  `)};
+  color: ${grey};
+  font-weight: 600;
+  font-size: 12px;
   text-decoration: none;
+  padding: 0 20px;
   &:hover,
   &:focus {
     opacity: 0.8;
+    color: ${charcoal};
   }
   &:active {
     transform: scale(0.95);
     opacity: 0.6;
   }
+
+  &.active {
+    background: ${paleGrey};
+    text-decoration: none;
+  }
 `;
 
 const NavLinks = () => (
   <Wrapper>
-    <NavLink to="/">
+    <Link exact activeClassName="active" to="/">
       <FormattedMessage {...messages.charts} />
-    </NavLink>
+    </Link>
     <NavSeparator />
-    <NavLink to="/features">
+    <Link activeClassName="active" to="/features">
       <FormattedMessage {...messages.data} />
-    </NavLink>
+    </Link>
     <NavSeparator />
-    <NavLink to="/">
+    <Link activeClassName="active" to="/definitions">
       <FormattedMessage {...messages.definitions} />
-    </NavLink>
+    </Link>
     <NavSeparator />
-    <NavLink to="/">
+    <Link activeClassName="active" to="/supporting-docs">
       <FormattedMessage {...messages.supportingDocs} />
-    </NavLink>
+    </Link>
   </Wrapper>
 );
 

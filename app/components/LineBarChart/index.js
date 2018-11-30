@@ -13,7 +13,7 @@ import { line as d3Line, curveBasis } from 'd3-shape';
 import Legend from '../Legend';
 import LineBar from './LineBar';
 
-class LineBarChart extends React.Component {
+class LineBarChart extends React.PureComponent {
   static selectSVGPaths = 'path__line';
 
   static defaultProps = {

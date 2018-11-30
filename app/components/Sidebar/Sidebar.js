@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import rem from '../../utils/rem';
 import { mobile } from '../../utils/media';
-import { oldLavender } from '../../utils/colors';
+import { paleGrey } from '../../utils/colors';
 import { sidebarWidth, navbarHeight } from '../../utils/sizes';
 import { headerFont } from '../../utils/fonts';
 
@@ -19,7 +19,7 @@ const Sidebar = styled.nav`
   bottom: 0;
   right: auto;
   width: ${rem(sidebarWidth)};
-  background: ${oldLavender};
+  background: ${paleGrey};
   box-sizing: border-box;
   color: inherit;
   overflow-y: auto;
