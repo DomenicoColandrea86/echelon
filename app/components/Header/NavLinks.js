@@ -6,7 +6,7 @@ import messages from './messages';
 import rem from '../../utils/rem';
 import { navbarHeight } from '../../utils/sizes';
 import NavSeparator from './NavSeparator';
-import { grey, charcoal, paleGrey } from '../../utils/colors';
+import { grey, paleGrey } from '../../utils/colors';
 
 const Wrapper = styled.nav`
   display: flex;
@@ -32,13 +32,13 @@ const Link = styled(NavLink)`
   &:hover,
   &:focus {
     opacity: 0.8;
-    color: ${charcoal};
+    color: ${grey};
   }
   &:active {
     transform: scale(0.95);
-    opacity: 0.6;
   }
 
+  &:hover,
   &.active {
     background: ${paleGrey};
     text-decoration: none;
