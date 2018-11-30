@@ -56,7 +56,7 @@ export const Header = styled.h2`
 
 export const SubHeader = styled.h3`
   display: block;
-  margin: 0;
+  margin: 2em 0 0.75em;
   font-size: ${rem(24)};
   font-weight: 600;
   font-family: ${headerFont};

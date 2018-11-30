@@ -32,7 +32,7 @@ const Shelf = styled.section`
 
 const StyledIcon = styled(Icon)`
   color: white;
-  font-size: 30px;
+  font-size: 22px;
 `;
 
 export const Title = styled.h1`
@@ -91,6 +91,17 @@ export class FilterBarShelf extends React.PureComponent {
                     your reach. Targeting brand pillars with the aim to further
                     your reach. Leverage vertical integration and possibly make
                     users into advocates.
+                  </p>
+                </Shelf>
+              </TabPane>
+              <TabPane tab={<StyledIcon type="line-chart" />} key="4">
+                <Shelf>
+                  <Title>Trends Chart</Title>
+                  <p>
+                    Engaging vertical integration so that as an end result, we
+                    innovate. Drive below the line to improve overall outcomes.
+                    Informing growth channels while remembering to be
+                    transparent.
                   </p>
                 </Shelf>
               </TabPane>
