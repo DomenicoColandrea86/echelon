@@ -1,6 +1,7 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import request from 'utils/request';
 import { LOAD_TRENDS } from './constants';
+import { makeSelectCurrentPropTypesFilter } from '../FilterBarShelf/selectors';
 import { trendsLoaded, trendsLoadingError } from './actions';
 
 /**
@@ -9,7 +10,8 @@ import { trendsLoaded, trendsLoadingError } from './actions';
 export function* getTrends() {
   const requestURL = '/api/trends';
   try {
-    const trends = yield call(request, requestURL);
+    const propType = yield select(makeSelectCurrentPropTypesFilter);
+    const trends = yield call(request, requestURL, propType);
     yield put(trendsLoaded(trends));
   } catch (err) {
     yield put(trendsLoadingError(err));

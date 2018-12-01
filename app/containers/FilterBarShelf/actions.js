@@ -8,6 +8,9 @@ import {
   LOAD_GEOS,
   LOAD_GEOS_SUCCESS,
   LOAD_GEOS_ERROR,
+  SET_PROPTYPES_FILTER,
+  SET_AGGS_FILTER,
+  SET_GEOS_FILTER,
 } from './constants';
 
 /**
@@ -124,5 +127,41 @@ export function geosLoadingError(error) {
   return {
     type: LOAD_GEOS_ERROR,
     error,
+  };
+}
+
+/**
+ * Set the geos filter
+ *
+ * @return {object} An action object with a type of SET_GEOS_FILTER
+ */
+export function setGeosFilter(geos) {
+  return {
+    type: SET_GEOS_FILTER,
+    geos,
+  };
+}
+
+/**
+ * Set the property type filter
+ *
+ * @return {object} An action object with a type of SET_PROPTYPES_FILTER
+ */
+export function setPropTypesFilter(propTypes) {
+  return {
+    type: SET_PROPTYPES_FILTER,
+    propTypes,
+  };
+}
+
+/**
+ * Set the aggregation type filter
+ *
+ * @return {object} An action object with a type of SET_AGGS_FILTER
+ */
+export function setAggsFilter(aggs) {
+  return {
+    type: SET_AGGS_FILTER,
+    aggs,
   };
 }

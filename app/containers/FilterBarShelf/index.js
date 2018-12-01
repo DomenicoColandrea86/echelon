@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { uid } from 'react-uid';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import rem from 'utils/rem';
 import { bodyFont } from 'utils/fonts';
 import { charcoal } from 'utils/colors';
@@ -18,9 +18,19 @@ import {
   makeSelectGeos,
   makeSelectAggs,
   makeSelectPropTypes,
+  makeSelectCurrentPropTypesFilter,
+  makeSelectCurrentAggsFilter,
+  makeSelectCurrentGeosFilter,
 } from './selectors';
 
-import { loadPropTypes, loadAggs, loadGeos } from './actions';
+import {
+  loadPropTypes,
+  loadAggs,
+  loadGeos,
+  setPropTypesFilter,
+  setAggsFilter,
+  setGeosFilter,
+} from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import Sidebar from '../../components/Sidebar/Sidebar';
@@ -32,7 +42,7 @@ const Shelf = styled.section`
 `;
 
 const ScrollableTabPane = styled(TabPane)`
-  height: auto;
+  height: 700px;
   overflow: scroll !important;
 `;
 
@@ -50,14 +60,17 @@ export const Title = styled.h1`
   font-family: ${bodyFont};
 `;
 
-export const PropTypeItem = styled.div`
+export const FilterShelfItem = styled.div`
   display: block;
   position: relative;
   padding: 2px 0px;
-`;
 
-export const PropTypeSubItem = styled(PropTypeItem)`
-  margin-left: 20px;
+  ${p =>
+    p.value &&
+    p.value.indent > 0 &&
+    css`
+      margin-left: 20px;
+    `};
 `;
 
 export const Label = styled.span`
@@ -71,58 +84,111 @@ export class FilterBarShelf extends React.PureComponent {
     this.props.onLoadPropTypes();
   }
 
-  onCheckboxChange = e => {
-    console.log(`checked = ${e.target.checked}, ${JSON.stringify(e.target)}`);
+  onGeosCheckboxChange = e => {
+    if (
+      !(
+        this.props.currentGeosFilter &&
+        e.target.value !== this.props.currentGeosFilter
+      )
+    ) {
+      this.props.setGeosFilter(
+        e.target.checked ? e.target.value : e.target.checked,
+      );
+    }
+  };
+
+  onPropTypesCheckboxChange = e => {
+    if (
+      !(
+        this.props.currentPropTypesFilter &&
+        e.target.value !== this.props.currentPropTypesFilter
+      )
+    ) {
+      this.props.setPropTypesFilter(
+        e.target.checked ? e.target.value : e.target.checked,
+      );
+    }
+  };
+
+  onAggsCheckboxChange = e => {
+    if (
+      !(
+        this.props.currentAggsFilter &&
+        e.target.value !== this.props.currentAggsFilter
+      )
+    ) {
+      this.props.setAggsFilter(
+        e.target.checked ? e.target.value : e.target.checked,
+      );
+    }
   };
 
   render() {
-    const { onCheckboxChange } = this;
-    const { isFolded, propTypes, aggs, geos } = this.props;
-    console.log(geos, propTypes, aggs);
+    const {
+      onPropTypesCheckboxChange,
+      onAggsCheckboxChange,
+      onGeosCheckboxChange,
+    } = this;
+    const {
+      isFolded,
+      propTypes,
+      aggs,
+      geos,
+      currentPropTypesFilter,
+      currentAggsFilter,
+      currentGeosFilter,
+    } = this.props;
 
     return (
       <>
         <Sidebar isFolded={isFolded}>
           <div>
             <Tabs tabPosition="left">
-              <TabPane tab={<StyledIcon type="global" />} key="1">
+              <ScrollableTabPane tab={<StyledIcon type="global" />} key="1">
                 <Shelf>
                   <Title>Select a Geography</Title>
-                  <p>
-                    Considering thought leadership and possibly think outside
-                    the box. Engage growth hacking with a goal to re-target key
-                    demographics. Engage below the fold while remembering to
-                    make users into advocates.
-                  </p>
+                  <div>
+                    {geos &&
+                      geos.map(geo => (
+                        <FilterShelfItem key={uid(geo)}>
+                          <Checkbox
+                            disabled={
+                              !!(
+                                currentGeosFilter &&
+                                geo.box2Value !== currentGeosFilter
+                              )
+                            }
+                            onChange={onGeosCheckboxChange}
+                            value={geo.box2Value}
+                          >
+                            <Label>{geo.box2}</Label>
+                          </Checkbox>
+                        </FilterShelfItem>
+                      ))}
+                  </div>
                 </Shelf>
-              </TabPane>
+              </ScrollableTabPane>
               <TabPane tab={<StyledIcon type="bank" />} key="2">
                 <Shelf>
                   <Title>Select a Properety Type</Title>
                   <div>
                     {propTypes &&
-                      propTypes.map(
-                        propType =>
-                          propType.indent !== 0 ? (
-                            <PropTypeSubItem>
-                              <Checkbox
-                                onChange={onCheckboxChange}
-                                key={uid(propType)}
-                              >
-                                <Label>{propType.box3}</Label>
-                              </Checkbox>
-                            </PropTypeSubItem>
-                          ) : (
-                            <PropTypeItem>
-                              <Checkbox
-                                onChange={onCheckboxChange}
-                                key={uid(propType)}
-                              >
-                                <Label>{propType.box3}</Label>
-                              </Checkbox>
-                            </PropTypeItem>
-                          ),
-                      )}
+                      propTypes.map(propType => (
+                        <FilterShelfItem value={propType} key={uid(propType)}>
+                          <Checkbox
+                            disabled={
+                              !!(
+                                currentPropTypesFilter &&
+                                propType.box3Value !== currentPropTypesFilter
+                              )
+                            }
+                            onChange={onPropTypesCheckboxChange}
+                            value={propType.box3Value}
+                          >
+                            <Label>{propType.box3}</Label>
+                          </Checkbox>
+                        </FilterShelfItem>
+                      ))}
                   </div>
                 </Shelf>
               </TabPane>
@@ -131,15 +197,21 @@ export class FilterBarShelf extends React.PureComponent {
                   <Title>Select a Dataset</Title>
                   <div>
                     {aggs &&
-                      aggs.map(propType => (
-                        <PropTypeItem>
+                      aggs.map(agg => (
+                        <FilterShelfItem key={uid(agg)}>
                           <Checkbox
-                            onChange={onCheckboxChange}
-                            key={uid(propType)}
+                            disabled={
+                              !!(
+                                currentAggsFilter &&
+                                agg.box1Value !== currentAggsFilter
+                              )
+                            }
+                            onChange={onAggsCheckboxChange}
+                            value={agg.box1Value}
                           >
-                            <Label>{propType.box1}</Label>
+                            <Label>{agg.box1}</Label>
                           </Checkbox>
-                        </PropTypeItem>
+                        </FilterShelfItem>
                       ))}
                   </div>
                 </Shelf>
@@ -148,10 +220,11 @@ export class FilterBarShelf extends React.PureComponent {
                 <Shelf>
                   <Title>Trends Chart</Title>
                   <p>
-                    Engaging vertical integration so that as an end result, we
-                    innovate. Drive below the line to improve overall outcomes.
-                    Informing growth channels while remembering to be
-                    transparent.
+                    Geography: {currentGeosFilter}
+                    <br />
+                    Property Type: {currentPropTypesFilter}
+                    <br />
+                    Dataset: {currentAggsFilter}
                   </p>
                 </Shelf>
               </TabPane>
@@ -165,12 +238,21 @@ export class FilterBarShelf extends React.PureComponent {
 
 FilterBarShelf.propTypes = {
   isFolded: PropTypes.bool,
+  currentPropTypesFilter: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
+  currentAggsFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  currentGeosFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   geos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   aggs: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   propTypes: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   onLoadGeos: PropTypes.func,
   onLoadAggs: PropTypes.func,
   onLoadPropTypes: PropTypes.func,
+  setPropTypesFilter: PropTypes.func,
+  setAggsFilter: PropTypes.func,
+  setGeosFilter: PropTypes.func,
 };
 
 export const mapDispatchToProps = dispatch => ({
@@ -186,12 +268,24 @@ export const mapDispatchToProps = dispatch => ({
     if (evt !== undefined && evt.preventDefault) evt.preventDefault();
     dispatch(loadGeos());
   },
+  setPropTypesFilter: e => {
+    dispatch(setPropTypesFilter(e));
+  },
+  setAggsFilter: e => {
+    dispatch(setAggsFilter(e));
+  },
+  setGeosFilter: e => {
+    dispatch(setGeosFilter(e));
+  },
 });
 
 const mapStateToProps = createStructuredSelector({
   geos: makeSelectGeos(),
   aggs: makeSelectAggs(),
   propTypes: makeSelectPropTypes(),
+  currentPropTypesFilter: makeSelectCurrentPropTypesFilter(),
+  currentAggsFilter: makeSelectCurrentAggsFilter(),
+  currentGeosFilter: makeSelectCurrentGeosFilter(),
 });
 
 const withConnect = connect(

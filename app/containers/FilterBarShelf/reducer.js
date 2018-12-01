@@ -11,6 +11,9 @@ import {
   LOAD_GEOS,
   LOAD_GEOS_SUCCESS,
   LOAD_GEOS_ERROR,
+  SET_PROPTYPES_FILTER,
+  SET_AGGS_FILTER,
+  SET_GEOS_FILTER,
 } from './constants';
 
 export const initialState = fromJS({
@@ -63,6 +66,12 @@ function filterBarShelfReducer(state = initialState, action) {
         .set('loading', false);
     case LOAD_GEOS_ERROR:
       return state.set('error', action.error).set('loading', false);
+    case SET_PROPTYPES_FILTER:
+      return state.setIn(['current', 'propTypes'], action.propTypes);
+    case SET_AGGS_FILTER:
+      return state.setIn(['current', 'aggs'], action.aggs);
+    case SET_GEOS_FILTER:
+      return state.setIn(['current', 'geos'], action.geos);
     default:
       return state;
   }

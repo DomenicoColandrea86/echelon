@@ -26,6 +26,21 @@ const makeSelectAggs = () =>
     state.getIn(['filters', 'aggs']),
   );
 
+const makeSelectCurrentPropTypesFilter = () =>
+  createSelector(selectFilterBarShelf, state =>
+    state.getIn(['current', 'propTypes']),
+  );
+
+const makeSelectCurrentAggsFilter = () =>
+  createSelector(selectFilterBarShelf, state =>
+    state.getIn(['current', 'aggs']),
+  );
+
+const makeSelectCurrentGeosFilter = () =>
+  createSelector(selectFilterBarShelf, state =>
+    state.getIn(['current', 'geos']),
+  );
+
 export {
   selectFilterBarShelf,
   makeSelectLoading,
@@ -34,4 +49,7 @@ export {
   makeSelectPropTypes,
   makeSelectAggs,
   makeSelectGeos,
+  makeSelectCurrentPropTypesFilter,
+  makeSelectCurrentAggsFilter,
+  makeSelectCurrentGeosFilter,
 };
