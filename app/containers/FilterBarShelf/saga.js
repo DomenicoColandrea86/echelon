@@ -1,21 +1,34 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select, all } from 'redux-saga/effects';
 import request from 'utils/request';
 import {
   propTypesLoaded,
   propTypesLoadingError,
-  aggsLoaded,
-  aggsLoadingError,
+  indicesLoaded,
+  indicesLoadingError,
   geosLoaded,
   geosLoadingError,
 } from './actions';
-import { LOAD_PROPTYPES, LOAD_AGGS, LOAD_GEOS } from './constants';
+import { loadTrends, trendsLoadingError } from '../ChartsPage/actions';
+import {
+  makeSelectCurrentGeosFilter,
+  makeSelectCurrentPropTypesFilter,
+  makeSelectCurrentIndicesFilter,
+} from './selectors';
+import {
+  LOAD_PROPTYPES,
+  LOAD_INDICES,
+  LOAD_GEOS,
+  SET_GEOS_FILTER,
+  SET_PROPTYPES_FILTER,
+  SET_INDICES_FILTER,
+} from './constants';
 
 /**
  * RCA propTypes request/response handler
  */
 export function* getPropTypes() {
-  const requestURL = '/api/propTypes';
   try {
+    const requestURL = '/api/propTypes';
     const propTypes = yield call(request, requestURL);
     yield put(propTypesLoaded(propTypes));
   } catch (err) {
@@ -24,15 +37,15 @@ export function* getPropTypes() {
 }
 
 /**
- * RCA aggs request/response handler
+ * RCA indices request/response handler
  */
-export function* getAggs() {
-  const requestURL = '/api/aggs';
+export function* getIndices() {
   try {
-    const aggs = yield call(request, requestURL);
-    yield put(aggsLoaded(aggs));
+    const requestURL = '/api/indices';
+    const indices = yield call(request, requestURL);
+    yield put(indicesLoaded(indices));
   } catch (err) {
-    yield put(aggsLoadingError(err));
+    yield put(indicesLoadingError(err));
   }
 }
 
@@ -40,21 +53,44 @@ export function* getAggs() {
  * RCA Geos request/response handler
  */
 export function* getGeos() {
-  const requestURL = '/api/geos';
   try {
-    const aggs = yield call(request, requestURL);
-    yield put(geosLoaded(aggs));
+    const requestURL = '/api/geos';
+    const geos = yield call(request, requestURL);
+    yield put(geosLoaded(geos));
   } catch (err) {
     yield put(geosLoadingError(err));
   }
 }
 
+/**
+ * Handle state changes request/response handler
+ */
+export function* asyncFilterChangeHandler() {
+  try {
+    const [geo, propType, indices] = yield all([
+      select(makeSelectCurrentGeosFilter()),
+      select(makeSelectCurrentPropTypesFilter()),
+      select(makeSelectCurrentIndicesFilter()),
+    ]);
+    // if we have all filters selected we can proceed
+    if (geo !== false && propType !== false && indices !== false) {
+      // load trends?
+      yield put(loadTrends({ geo, propType, indices }));
+    }
+  } catch (err) {
+    yield put(trendsLoadingError(err));
+  }
+}
+
 // Root saga
-export default function* asyncFilterData() {
-  // if necessary, start multiple sagas at once with `all`
+export default function* asyncFilterBarShelf() {
   yield [
     takeLatest(LOAD_GEOS, getGeos),
     takeLatest(LOAD_PROPTYPES, getPropTypes),
-    takeLatest(LOAD_AGGS, getAggs),
+    takeLatest(LOAD_INDICES, getIndices),
+    takeLatest(
+      [SET_GEOS_FILTER, SET_PROPTYPES_FILTER, SET_INDICES_FILTER],
+      asyncFilterChangeHandler,
+    ),
   ];
 }

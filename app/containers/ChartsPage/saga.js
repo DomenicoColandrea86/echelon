@@ -1,17 +1,19 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
 import { LOAD_TRENDS } from './constants';
-import { makeSelectCurrentPropTypesFilter } from '../FilterBarShelf/selectors';
 import { trendsLoaded, trendsLoadingError } from './actions';
 
 /**
  * RCA trends request/response handler
  */
-export function* getTrends() {
-  const requestURL = '/api/trends';
+export function* getTrends(action) {
   try {
-    const propType = yield select(makeSelectCurrentPropTypesFilter);
-    const trends = yield call(request, requestURL, propType);
+    const requestURL = '/api/trends';
+    const {
+      filters: { geo, propType, indices },
+    } = action;
+    const queryParams = { geo, propType, indices };
+    const trends = yield call(request, requestURL, { queryParams });
     yield put(trendsLoaded(trends));
   } catch (err) {
     yield put(trendsLoadingError(err));

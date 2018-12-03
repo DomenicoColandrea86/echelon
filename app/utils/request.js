@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /**
  * Parses the JSON returned by a network request
  *
@@ -29,6 +30,12 @@ function checkStatus(response) {
   throw error;
 }
 
+function queryParams(params) {
+  return Object.keys(params)
+    .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+    .join('&');
+}
+
 /**
  * Requests a URL, returning a promise
  *
@@ -38,6 +45,10 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(url, options) {
+  if (options && options.queryParams) {
+    url +=
+      (url.indexOf('?') === -1 ? '?' : '&') + queryParams(options.queryParams);
+  }
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON);

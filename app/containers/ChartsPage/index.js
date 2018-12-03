@@ -15,7 +15,6 @@ import {
   makeSelectLoading,
   makeSelectError,
 } from './selectors';
-import { loadTrends } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -29,10 +28,6 @@ const Section = styled.section`
 `;
 
 export class ChartsPage extends React.PureComponent {
-  componentDidMount() {
-    this.props.onLoadTrends();
-  }
-
   render() {
     const { loading, error, trends } = this.props;
     return (
@@ -63,17 +58,7 @@ ChartsPage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   trends: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  onLoadTrends: PropTypes.func,
 };
-
-export function mapDispatchToProps(dispatch) {
-  return {
-    onLoadTrends: evt => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadTrends());
-    },
-  };
-}
 
 const mapStateToProps = createStructuredSelector({
   trends: makeSelectTrends(),
@@ -83,7 +68,7 @@ const mapStateToProps = createStructuredSelector({
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  null,
 );
 
 const withReducer = injectReducer({ key: 'charts', reducer });

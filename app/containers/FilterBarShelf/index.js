@@ -16,19 +16,19 @@ import { Tabs, Icon, Checkbox } from 'antd';
 
 import {
   makeSelectGeos,
-  makeSelectAggs,
+  makeSelectIndices,
   makeSelectPropTypes,
   makeSelectCurrentPropTypesFilter,
-  makeSelectCurrentAggsFilter,
+  makeSelectCurrentIndicesFilter,
   makeSelectCurrentGeosFilter,
 } from './selectors';
 
 import {
   loadPropTypes,
-  loadAggs,
+  loadIndices,
   loadGeos,
   setPropTypesFilter,
-  setAggsFilter,
+  setIndicesFilter,
   setGeosFilter,
 } from './actions';
 import reducer from './reducer';
@@ -80,7 +80,7 @@ export const Label = styled.span`
 export class FilterBarShelf extends React.PureComponent {
   componentDidMount() {
     this.props.onLoadGeos();
-    this.props.onLoadAggs();
+    this.props.onLoadIndices();
     this.props.onLoadPropTypes();
   }
 
@@ -110,14 +110,14 @@ export class FilterBarShelf extends React.PureComponent {
     }
   };
 
-  onAggsCheckboxChange = e => {
+  onIndicesCheckboxChange = e => {
     if (
       !(
-        this.props.currentAggsFilter &&
-        e.target.value !== this.props.currentAggsFilter
+        this.props.currentIndicesFilter &&
+        e.target.value !== this.props.currentIndicesFilter
       )
     ) {
-      this.props.setAggsFilter(
+      this.props.setIndicesFilter(
         e.target.checked ? e.target.value : e.target.checked,
       );
     }
@@ -126,16 +126,16 @@ export class FilterBarShelf extends React.PureComponent {
   render() {
     const {
       onPropTypesCheckboxChange,
-      onAggsCheckboxChange,
+      onIndicesCheckboxChange,
       onGeosCheckboxChange,
     } = this;
     const {
       isFolded,
       propTypes,
-      aggs,
+      indices,
       geos,
       currentPropTypesFilter,
-      currentAggsFilter,
+      currentIndicesFilter,
       currentGeosFilter,
     } = this.props;
 
@@ -196,20 +196,20 @@ export class FilterBarShelf extends React.PureComponent {
                 <Shelf>
                   <Title>Select a Dataset</Title>
                   <div>
-                    {aggs &&
-                      aggs.map(agg => (
-                        <FilterShelfItem key={uid(agg)}>
+                    {indices &&
+                      indices.map(index => (
+                        <FilterShelfItem key={uid(index)}>
                           <Checkbox
                             disabled={
                               !!(
-                                currentAggsFilter &&
-                                agg.box1Value !== currentAggsFilter
+                                currentIndicesFilter &&
+                                index.box1Value !== currentIndicesFilter
                               )
                             }
-                            onChange={onAggsCheckboxChange}
-                            value={agg.box1Value}
+                            onChange={onIndicesCheckboxChange}
+                            value={index.box1Value}
                           >
-                            <Label>{agg.box1}</Label>
+                            <Label>{index.box1}</Label>
                           </Checkbox>
                         </FilterShelfItem>
                       ))}
@@ -224,7 +224,7 @@ export class FilterBarShelf extends React.PureComponent {
                     <br />
                     Property Type: {currentPropTypesFilter}
                     <br />
-                    Dataset: {currentAggsFilter}
+                    Dataset: {currentIndicesFilter}
                   </p>
                 </Shelf>
               </TabPane>
@@ -242,16 +242,16 @@ FilterBarShelf.propTypes = {
     PropTypes.string,
     PropTypes.bool,
   ]),
-  currentAggsFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  currentIndicesFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   currentGeosFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   geos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  aggs: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  indices: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   propTypes: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   onLoadGeos: PropTypes.func,
-  onLoadAggs: PropTypes.func,
+  onLoadIndices: PropTypes.func,
   onLoadPropTypes: PropTypes.func,
   setPropTypesFilter: PropTypes.func,
-  setAggsFilter: PropTypes.func,
+  setIndicesFilter: PropTypes.func,
   setGeosFilter: PropTypes.func,
 };
 
@@ -260,9 +260,9 @@ export const mapDispatchToProps = dispatch => ({
     if (evt !== undefined && evt.preventDefault) evt.preventDefault();
     dispatch(loadPropTypes());
   },
-  onLoadAggs: evt => {
+  onLoadIndices: evt => {
     if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-    dispatch(loadAggs());
+    dispatch(loadIndices());
   },
   onLoadGeos: evt => {
     if (evt !== undefined && evt.preventDefault) evt.preventDefault();
@@ -271,8 +271,8 @@ export const mapDispatchToProps = dispatch => ({
   setPropTypesFilter: e => {
     dispatch(setPropTypesFilter(e));
   },
-  setAggsFilter: e => {
-    dispatch(setAggsFilter(e));
+  setIndicesFilter: e => {
+    dispatch(setIndicesFilter(e));
   },
   setGeosFilter: e => {
     dispatch(setGeosFilter(e));
@@ -281,10 +281,10 @@ export const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = createStructuredSelector({
   geos: makeSelectGeos(),
-  aggs: makeSelectAggs(),
+  indices: makeSelectIndices(),
   propTypes: makeSelectPropTypes(),
   currentPropTypesFilter: makeSelectCurrentPropTypesFilter(),
-  currentAggsFilter: makeSelectCurrentAggsFilter(),
+  currentIndicesFilter: makeSelectCurrentIndicesFilter(),
   currentGeosFilter: makeSelectCurrentGeosFilter(),
 });
 

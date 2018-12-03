@@ -12,6 +12,7 @@ import { mobile } from '../../utils/media';
 import NavLinks from './NavLinks';
 import Logo from './Logo';
 import MobileNavbar from './MobileNavbar';
+import Emoji from '../Emoji';
 
 const Wrapper = styled.nav`
   position: fixed;
@@ -63,6 +64,14 @@ const LogoLink = styled(Link).attrs({
   display: inline-block;
   vertical-align: center;
   margin-right: ${rem(35)};
+
+  span {
+    font-size: 28px;
+    vertical-align: middle;
+    margin-left: 6px;
+    top: 2px;
+    position: relative;
+  }
 `;
 
 const Navbar = ({
@@ -77,6 +86,7 @@ const Navbar = ({
       <StartWrapper>
         <LogoLink to="/">
           <Logo />
+          <Emoji symbol="🎄" label="christmas tree" />
         </LogoLink>
       </StartWrapper>
       <EndWrapper>

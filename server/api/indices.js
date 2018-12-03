@@ -1,6 +1,6 @@
 const api = require('./api');
 
-const Aggs = {
+const Indices = {
   read: (req, res, next) => {
     api
       .get(
@@ -11,4 +11,4 @@ const Aggs = {
   },
 };
 
-module.exports = Aggs;
+module.exports = Indices;

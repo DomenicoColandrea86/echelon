@@ -21,9 +21,9 @@ const makeSelectGeos = () =>
     state.getIn(['filters', 'geos']),
   );
 
-const makeSelectAggs = () =>
+const makeSelectIndices = () =>
   createSelector(selectFilterBarShelf, state =>
-    state.getIn(['filters', 'aggs']),
+    state.getIn(['filters', 'indices']),
   );
 
 const makeSelectCurrentPropTypesFilter = () =>
@@ -31,9 +31,9 @@ const makeSelectCurrentPropTypesFilter = () =>
     state.getIn(['current', 'propTypes']),
   );
 
-const makeSelectCurrentAggsFilter = () =>
+const makeSelectCurrentIndicesFilter = () =>
   createSelector(selectFilterBarShelf, state =>
-    state.getIn(['current', 'aggs']),
+    state.getIn(['current', 'indices']),
   );
 
 const makeSelectCurrentGeosFilter = () =>
@@ -47,9 +47,9 @@ export {
   makeSelectError,
   makeSelectFilters,
   makeSelectPropTypes,
-  makeSelectAggs,
+  makeSelectIndices,
   makeSelectGeos,
   makeSelectCurrentPropTypesFilter,
-  makeSelectCurrentAggsFilter,
+  makeSelectCurrentIndicesFilter,
   makeSelectCurrentGeosFilter,
 };

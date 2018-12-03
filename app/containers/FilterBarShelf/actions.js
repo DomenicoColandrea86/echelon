@@ -2,14 +2,14 @@ import {
   LOAD_PROPTYPES,
   LOAD_PROPTYPES_SUCCESS,
   LOAD_PROPTYPES_ERROR,
-  LOAD_AGGS,
-  LOAD_AGGS_SUCCESS,
-  LOAD_AGGS_ERROR,
+  LOAD_INDICES,
+  LOAD_INDICES_SUCCESS,
+  LOAD_INDICES_ERROR,
   LOAD_GEOS,
   LOAD_GEOS_SUCCESS,
   LOAD_GEOS_ERROR,
   SET_PROPTYPES_FILTER,
-  SET_AGGS_FILTER,
+  SET_INDICES_FILTER,
   SET_GEOS_FILTER,
 } from './constants';
 
@@ -53,40 +53,40 @@ export function propTypesLoadingError(error) {
 }
 
 /**
- * Load the aggregations, this action starts the request saga
+ * Load the Indices, this action starts the request saga
  *
- * @return {object} An action object with a type of LOAD_AGGS
+ * @return {object} An action object with a type of LOAD_INDICES
  */
-export function loadAggs() {
+export function loadIndices() {
   return {
-    type: LOAD_AGGS,
+    type: LOAD_INDICES,
   };
 }
 
 /**
- * Dispatched when the aggs are loaded by the request saga
+ * Dispatched when the indices are loaded by the request saga
  *
- * @param  {array} trends The aggs data
+ * @param  {array} trends The indices data
  *
- * @return {object} An action object with a type of LOAD_AGGS_SUCCESS passing the aggs
+ * @return {object} An action object with a type of LOAD_INDICES_SUCCESS passing the indices
  */
-export function aggsLoaded(aggs) {
+export function indicesLoaded(indices) {
   return {
-    type: LOAD_AGGS_SUCCESS,
-    aggs,
+    type: LOAD_INDICES_SUCCESS,
+    indices,
   };
 }
 
 /**
- * Dispatched when loading the aggs fails
+ * Dispatched when loading the indices fails
  *
  * @param  {object} error The error
  *
- * @return {object} An action object with a type of LOAD_AGGS_ERROR passing the error
+ * @return {object} An action object with a type of LOAD_INDICES_ERROR passing the error
  */
-export function aggsLoadingError(error) {
+export function indicesLoadingError(error) {
   return {
-    type: LOAD_AGGS_ERROR,
+    type: LOAD_INDICES_ERROR,
     error,
   };
 }
@@ -155,13 +155,13 @@ export function setPropTypesFilter(propTypes) {
 }
 
 /**
- * Set the aggregation type filter
+ * Set the indices type filter
  *
- * @return {object} An action object with a type of SET_AGGS_FILTER
+ * @return {object} An action object with a type of SET_INDICES_FILTER
  */
-export function setAggsFilter(aggs) {
+export function setIndicesFilter(indices) {
   return {
-    type: SET_AGGS_FILTER,
-    aggs,
+    type: SET_INDICES_FILTER,
+    indices,
   };
 }

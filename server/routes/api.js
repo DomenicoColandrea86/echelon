@@ -8,7 +8,7 @@ const APIRouter = middleware => {
   const router = express.Router();
   // routes
   router.get('/geos', Api.Geos.read);
-  router.get('/aggs', Api.Aggs.read);
+  router.get('/indices', Api.Indices.read);
   router.get('/trends', Api.Trends.read);
   router.get('/propTypes', Api.PropTypes.read);
 
