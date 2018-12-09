@@ -1,6 +1,5 @@
 /* eslint-disable react/forbid-foreign-prop-types */
 import { fromJS } from 'immutable';
-
 import {
   LOAD_TRENDS,
   LOAD_TRENDS_SUCCESS,

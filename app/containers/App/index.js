@@ -1,12 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Switch, Route, withRouter } from 'react-router-dom';
-
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import { Container, Content } from 'components/Layout';
 import GlobalStyle from '../../global-styles';
-
 import ChartsPage from '../ChartsPage/Loadable';
 import FeaturePage from '../FeaturePage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
@@ -15,20 +13,6 @@ class App extends React.PureComponent {
   state = {
     isSideFolded: true,
     isMobileNavFolded: true,
-  };
-
-  onSideToggle = () => {
-    this.setState(prevState => ({
-      isSideFolded: !prevState.isSideFolded,
-      isMobileNavFolded: true,
-    }));
-  };
-
-  onMobileNavToggle = () => {
-    this.setState(prevState => ({
-      isMobileNavFolded: !prevState.isMobileNavFolded,
-      isSideFolded: true,
-    }));
   };
 
   render() {
@@ -58,6 +42,20 @@ class App extends React.PureComponent {
       </>
     );
   }
+
+  onSideToggle = () => {
+    this.setState(prevState => ({
+      isSideFolded: !prevState.isSideFolded,
+      isMobileNavFolded: true,
+    }));
+  };
+
+  onMobileNavToggle = () => {
+    this.setState(prevState => ({
+      isMobileNavFolded: !prevState.isMobileNavFolded,
+      isSideFolded: true,
+    }));
+  };
 }
 
 export default withRouter(App);

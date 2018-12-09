@@ -3,9 +3,6 @@ import request from 'utils/request';
 import { LOAD_TRENDS } from './constants';
 import { trendsLoaded, trendsLoadingError } from './actions';
 
-/**
- * RCA trends request/response handler
- */
 export function* getTrends(action) {
   try {
     const requestURL = '/api/trends';

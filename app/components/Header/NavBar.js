@@ -71,6 +71,11 @@ const LogoLink = styled(Link).attrs({
     margin-left: 6px;
     top: 2px;
     position: relative;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
   }
 `;
 

@@ -1,14 +1,6 @@
-/*
- * FeaturePage
- *
- * List all the features
- */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-
-import H1 from 'components/H1';
-import messages from './messages';
+import { Title } from 'components/Layout';
 import List from './List';
 import ListItem from './ListItem';
 import ListItemTitle from './ListItemTitle';
@@ -24,55 +16,25 @@ export default class FeaturePage extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>Feature Page</title>
-          <meta name="description" content="Data Page" />
+          <title>Features</title>
+          <meta name="description" content="Features" />
         </Helmet>
-        <H1>
-          <FormattedMessage {...messages.header} />
-        </H1>
+        <Title>Features</Title>
         <List>
           <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.scaffoldingHeader} />
-            </ListItemTitle>
+            <ListItemTitle>Industry-standard routing</ListItemTitle>
             <p>
-              <FormattedMessage {...messages.scaffoldingMessage} />
+              Write composable CSS thats co-located with your components for
+              complete modularity. Unique generated class names keep the
+              specificity low while eliminating style clashes. Ship only the
+              styles that are on the page for the best performance.
             </p>
           </ListItem>
-
           <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.feedbackHeader} />
-            </ListItemTitle>
+            <ListItemTitle>Offline-first</ListItemTitle>
             <p>
-              <FormattedMessage {...messages.feedbackMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.routingHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.routingMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.networkHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.networkMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.intlHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.intlMessage} />
+              The next frontier in performant web apps: availability without a
+              network connection from the instant your users load the app.
             </p>
           </ListItem>
         </List>

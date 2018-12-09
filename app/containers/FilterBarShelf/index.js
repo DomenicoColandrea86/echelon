@@ -1,28 +1,21 @@
 /* eslint-disable react/forbid-foreign-prop-types */
-/* eslint-disable consistent-return */
+/* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { uid } from 'react-uid';
-import styled, { css } from 'styled-components';
-import rem from 'utils/rem';
-import { bodyFont } from 'utils/fonts';
-import { charcoal } from 'utils/colors';
-import injectReducer from 'utils/injectReducer';
+import { Tabs, Checkbox } from 'antd';
 import injectSaga from 'utils/injectSaga';
-import { Tabs, Icon, Checkbox } from 'antd';
-
-import {
-  makeSelectGeos,
-  makeSelectIndices,
-  makeSelectPropTypes,
-  makeSelectCurrentPropTypesFilter,
-  makeSelectCurrentIndicesFilter,
-  makeSelectCurrentGeosFilter,
-} from './selectors';
-
+import injectReducer from 'utils/injectReducer';
+import ContentLoader from './ContentLoader';
+import Sidebar from '../../components/Sidebar/Sidebar';
+import saga from './saga';
+import reducer from './reducer';
+import { makeSelectFilters } from './selectors';
 import {
   loadPropTypes,
   loadIndices,
@@ -30,115 +23,49 @@ import {
   setPropTypesFilter,
   setIndicesFilter,
   setGeosFilter,
+  resetFilterBarShelf,
+  hydrateFiltersFromCache,
 } from './actions';
-import reducer from './reducer';
-import saga from './saga';
-import Sidebar from '../../components/Sidebar/Sidebar';
-
-const { TabPane } = Tabs;
-
-const Shelf = styled.section`
-  padding: 10px 4px;
-`;
-
-const ScrollableTabPane = styled(TabPane)`
-  height: 700px;
-  overflow: scroll !important;
-`;
-
-const StyledIcon = styled(Icon)`
-  color: white;
-  font-size: 22px;
-`;
-
-export const Title = styled.h1`
-  display: block;
-  text-align: left;
-  width: 100%;
-  color: ${charcoal};
-  font-size: ${rem(14)};
-  font-family: ${bodyFont};
-`;
-
-export const FilterShelfItem = styled.div`
-  display: block;
-  position: relative;
-  padding: 2px 0px;
-
-  ${p =>
-    p.value &&
-    p.value.indent > 0 &&
-    css`
-      margin-left: 20px;
-    `};
-`;
-
-export const Label = styled.span`
-  font-size: 10px;
-`;
+import {
+  ScrollableTabPane,
+  StyledIcon,
+  Shelf,
+  Title,
+  FilterShelfItem,
+  Label,
+} from './styled';
 
 export class FilterBarShelf extends React.PureComponent {
-  componentDidMount() {
-    this.props.onLoadGeos();
-    this.props.onLoadIndices();
-    this.props.onLoadPropTypes();
+  static defaultLocalFilterState = {
+    geos: false,
+    propTypes: false,
+    indices: false,
+  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const allFiltersSelected = Object.keys(prevState.localFilters).every(
+      k => !!prevState.localFilters[k],
+    );
+    if (allFiltersSelected) {
+      nextProps.setGeosFilter(prevState.localFilters.geos);
+      nextProps.setPropTypesFilter(prevState.localFilters.propTypes);
+      nextProps.setIndicesFilter(prevState.localFilters.indices);
+      prevState.localFilters = FilterBarShelf.defaultLocalFilterState;
+      nextProps.resetFilterBarShelf(nextProps.filters);
+    }
+    return prevState;
   }
 
-  onGeosCheckboxChange = e => {
-    if (
-      !(
-        this.props.currentGeosFilter &&
-        e.target.value !== this.props.currentGeosFilter
-      )
-    ) {
-      this.props.setGeosFilter(
-        e.target.checked ? e.target.value : e.target.checked,
-      );
-    }
+  state = {
+    localFilters: FilterBarShelf.defaultLocalFilterState,
   };
 
-  onPropTypesCheckboxChange = e => {
-    if (
-      !(
-        this.props.currentPropTypesFilter &&
-        e.target.value !== this.props.currentPropTypesFilter
-      )
-    ) {
-      this.props.setPropTypesFilter(
-        e.target.checked ? e.target.value : e.target.checked,
-      );
-    }
-  };
-
-  onIndicesCheckboxChange = e => {
-    if (
-      !(
-        this.props.currentIndicesFilter &&
-        e.target.value !== this.props.currentIndicesFilter
-      )
-    ) {
-      this.props.setIndicesFilter(
-        e.target.checked ? e.target.value : e.target.checked,
-      );
-    }
-  };
+  componentDidMount() {
+    this.props.onLoadGeos();
+  }
 
   render() {
-    const {
-      onPropTypesCheckboxChange,
-      onIndicesCheckboxChange,
-      onGeosCheckboxChange,
-    } = this;
-    const {
-      isFolded,
-      propTypes,
-      indices,
-      geos,
-      currentPropTypesFilter,
-      currentIndicesFilter,
-      currentGeosFilter,
-    } = this.props;
-
+    const { isFolded, filters } = this.props;
     return (
       <>
         <Sidebar isFolded={isFolded}>
@@ -146,146 +73,168 @@ export class FilterBarShelf extends React.PureComponent {
             <Tabs tabPosition="left">
               <ScrollableTabPane tab={<StyledIcon type="global" />} key="1">
                 <Shelf>
-                  <Title>Select a Geography</Title>
-                  <div>
-                    {geos &&
-                      geos.map(geo => (
-                        <FilterShelfItem key={uid(geo)}>
-                          <Checkbox
-                            disabled={
-                              !!(
-                                currentGeosFilter &&
-                                geo.box2Value !== currentGeosFilter
-                              )
-                            }
-                            onChange={onGeosCheckboxChange}
-                            value={geo.box2Value}
-                          >
-                            <Label>{geo.box2}</Label>
-                          </Checkbox>
-                        </FilterShelfItem>
-                      ))}
-                  </div>
+                  {filters && !filters.geos.length ? (
+                    <ContentLoader />
+                  ) : (
+                    <>
+                      <Title>Select a Geography</Title>
+                      <div>
+                        {filters.geos &&
+                          filters.geos.map(geo => (
+                            <FilterShelfItem key={uid(geo)}>
+                              <Checkbox
+                                onChange={this.onGeosCheckboxChange}
+                                value={geo.box2Value}
+                              >
+                                <Label>{geo.box2}</Label>
+                              </Checkbox>
+                            </FilterShelfItem>
+                          ))}
+                      </div>
+                    </>
+                  )}
                 </Shelf>
               </ScrollableTabPane>
-              <TabPane tab={<StyledIcon type="bank" />} key="2">
+              <ScrollableTabPane tab={<StyledIcon type="bank" />} key="2">
                 <Shelf>
-                  <Title>Select a Properety Type</Title>
-                  <div>
-                    {propTypes &&
-                      propTypes.map(propType => (
-                        <FilterShelfItem value={propType} key={uid(propType)}>
-                          <Checkbox
-                            disabled={
-                              !!(
-                                currentPropTypesFilter &&
-                                propType.box3Value !== currentPropTypesFilter
-                              )
-                            }
-                            onChange={onPropTypesCheckboxChange}
-                            value={propType.box3Value}
-                          >
-                            <Label>{propType.box3}</Label>
-                          </Checkbox>
-                        </FilterShelfItem>
-                      ))}
-                  </div>
+                  {filters && !filters.propTypes.length ? (
+                    <ContentLoader />
+                  ) : (
+                    <>
+                      <Title>Select a Properety Type</Title>
+                      <div>
+                        {filters.propTypes &&
+                          filters.propTypes.map(propType => (
+                            <FilterShelfItem
+                              value={propType}
+                              key={uid(propType)}
+                            >
+                              <Checkbox
+                                onChange={this.onPropTypesCheckboxChange}
+                                value={propType.box3Value}
+                              >
+                                <Label>{propType.box3}</Label>
+                              </Checkbox>
+                            </FilterShelfItem>
+                          ))}
+                      </div>
+                    </>
+                  )}
                 </Shelf>
-              </TabPane>
+              </ScrollableTabPane>
               <ScrollableTabPane tab={<StyledIcon type="audit" />} key="3">
                 <Shelf>
-                  <Title>Select a Dataset</Title>
-                  <div>
-                    {indices &&
-                      indices.map(index => (
-                        <FilterShelfItem key={uid(index)}>
-                          <Checkbox
-                            disabled={
-                              !!(
-                                currentIndicesFilter &&
-                                index.box1Value !== currentIndicesFilter
-                              )
-                            }
-                            onChange={onIndicesCheckboxChange}
-                            value={index.box1Value}
-                          >
-                            <Label>{index.box1}</Label>
-                          </Checkbox>
-                        </FilterShelfItem>
-                      ))}
-                  </div>
+                  {filters && !filters.indices.length ? (
+                    <ContentLoader />
+                  ) : (
+                    <>
+                      <Title>Select a Dataset</Title>
+                      <div>
+                        {filters.indices &&
+                          filters.indices.map(index => (
+                            <FilterShelfItem key={uid(index)}>
+                              <Checkbox
+                                onChange={this.onIndicesCheckboxChange}
+                                value={index.box1Value}
+                              >
+                                <Label>{index.box1}</Label>
+                              </Checkbox>
+                            </FilterShelfItem>
+                          ))}
+                      </div>
+                    </>
+                  )}
                 </Shelf>
               </ScrollableTabPane>
-              <TabPane tab={<StyledIcon type="line-chart" />} key="4">
-                <Shelf>
-                  <Title>Trends Chart</Title>
-                  <p>
-                    Geography: {currentGeosFilter}
-                    <br />
-                    Property Type: {currentPropTypesFilter}
-                    <br />
-                    Dataset: {currentIndicesFilter}
-                  </p>
-                </Shelf>
-              </TabPane>
             </Tabs>
           </div>
         </Sidebar>
       </>
     );
   }
+
+  onGeosCheckboxChange = e => {
+    if (!(this.state.localFilters && this.state.localFilters.geos)) {
+      this.props.onLoadPropTypes(e.target.value);
+      this.setState(prevState => ({
+        localFilters: {
+          ...prevState.localFilters,
+          geos: e.target.checked ? e.target.value : e.target.checked,
+        },
+      }));
+    }
+  };
+
+  onPropTypesCheckboxChange = e => {
+    if (!(this.state.localFilters && this.state.localFilters.propTypes)) {
+      this.props.onLoadIndices(e.target.value);
+      this.setState(prevState => ({
+        localFilters: {
+          ...prevState.localFilters,
+          propTypes: e.target.checked ? e.target.value : e.target.checked,
+        },
+      }));
+    }
+  };
+
+  onIndicesCheckboxChange = e => {
+    if (!(this.state.localFilters && this.state.localFilters.indices)) {
+      this.setState(prevState => ({
+        localFilters: {
+          ...prevState.localFilters,
+          indices: e.target.checked ? e.target.value : e.target.checked,
+        },
+      }));
+    }
+  };
 }
 
 FilterBarShelf.propTypes = {
   isFolded: PropTypes.bool,
-  currentPropTypesFilter: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  currentIndicesFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  currentGeosFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  geos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  indices: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  propTypes: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  filters: PropTypes.shape({
+    geos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+    indices: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+    propTypes: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  }),
   onLoadGeos: PropTypes.func,
   onLoadIndices: PropTypes.func,
   onLoadPropTypes: PropTypes.func,
   setPropTypesFilter: PropTypes.func,
   setIndicesFilter: PropTypes.func,
   setGeosFilter: PropTypes.func,
+  resetFilterBarShelf: PropTypes.func,
+  hydrateFiltersFromCache: PropTypes.func,
 };
 
 export const mapDispatchToProps = dispatch => ({
-  onLoadPropTypes: evt => {
-    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-    dispatch(loadPropTypes());
-  },
-  onLoadIndices: evt => {
-    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-    dispatch(loadIndices());
-  },
-  onLoadGeos: evt => {
-    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+  onLoadGeos: () => {
     dispatch(loadGeos());
   },
-  setPropTypesFilter: e => {
-    dispatch(setPropTypesFilter(e));
+  onLoadPropTypes: geos => {
+    dispatch(loadPropTypes(geos));
   },
-  setIndicesFilter: e => {
-    dispatch(setIndicesFilter(e));
+  onLoadIndices: propTypes => {
+    dispatch(loadIndices(propTypes));
   },
-  setGeosFilter: e => {
-    dispatch(setGeosFilter(e));
+  setPropTypesFilter: propTypes => {
+    dispatch(setPropTypesFilter(propTypes));
+  },
+  setIndicesFilter: indices => {
+    dispatch(setIndicesFilter(indices));
+  },
+  setGeosFilter: geos => {
+    dispatch(setGeosFilter(geos));
+  },
+  resetFilterBarShelf: async filters => {
+    await new Promise(resolve => resolve(dispatch(resetFilterBarShelf())));
+    await new Promise(resolve =>
+      resolve(dispatch(hydrateFiltersFromCache(filters))),
+    );
   },
 });
 
 const mapStateToProps = createStructuredSelector({
-  geos: makeSelectGeos(),
-  indices: makeSelectIndices(),
-  propTypes: makeSelectPropTypes(),
-  currentPropTypesFilter: makeSelectCurrentPropTypesFilter(),
-  currentIndicesFilter: makeSelectCurrentIndicesFilter(),
-  currentGeosFilter: makeSelectCurrentGeosFilter(),
+  filters: makeSelectFilters(),
 });
 
 const withConnect = connect(

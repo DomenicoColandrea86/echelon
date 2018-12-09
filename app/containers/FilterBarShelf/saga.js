@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-foreign-prop-types */
 import { call, put, takeLatest, select, all } from 'redux-saga/effects';
 import request from 'utils/request';
 import {
@@ -23,35 +24,30 @@ import {
   SET_INDICES_FILTER,
 } from './constants';
 
-/**
- * RCA propTypes request/response handler
- */
-export function* getPropTypes() {
+export function* getPropTypes(action) {
   try {
+    const { geos } = action;
+    const queryParams = { geos };
     const requestURL = '/api/propTypes';
-    const propTypes = yield call(request, requestURL);
+    const propTypes = yield call(request, requestURL, { queryParams });
     yield put(propTypesLoaded(propTypes));
   } catch (err) {
     yield put(propTypesLoadingError(err));
   }
 }
 
-/**
- * RCA indices request/response handler
- */
-export function* getIndices() {
+export function* getIndices(action) {
   try {
+    const { propTypes } = action;
+    const queryParams = { propTypes };
     const requestURL = '/api/indices';
-    const indices = yield call(request, requestURL);
+    const indices = yield call(request, requestURL, { queryParams });
     yield put(indicesLoaded(indices));
   } catch (err) {
     yield put(indicesLoadingError(err));
   }
 }
 
-/**
- * RCA Geos request/response handler
- */
 export function* getGeos() {
   try {
     const requestURL = '/api/geos';
@@ -62,9 +58,6 @@ export function* getGeos() {
   }
 }
 
-/**
- * Handle state changes request/response handler
- */
 export function* asyncFilterChangeHandler() {
   try {
     const [geo, propType, indices] = yield all([
@@ -72,9 +65,7 @@ export function* asyncFilterChangeHandler() {
       select(makeSelectCurrentPropTypesFilter()),
       select(makeSelectCurrentIndicesFilter()),
     ]);
-    // if we have all filters selected we can proceed
     if (geo !== false && propType !== false && indices !== false) {
-      // load trends?
       yield put(loadTrends({ geo, propType, indices }));
     }
   } catch (err) {
@@ -84,7 +75,7 @@ export function* asyncFilterChangeHandler() {
 
 // Root saga
 export default function* asyncFilterBarShelf() {
-  yield [
+  yield all([
     takeLatest(LOAD_GEOS, getGeos),
     takeLatest(LOAD_PROPTYPES, getPropTypes),
     takeLatest(LOAD_INDICES, getIndices),
@@ -92,5 +83,5 @@ export default function* asyncFilterBarShelf() {
       [SET_GEOS_FILTER, SET_PROPTYPES_FILTER, SET_INDICES_FILTER],
       asyncFilterChangeHandler,
     ),
-  ];
+  ]);
 }

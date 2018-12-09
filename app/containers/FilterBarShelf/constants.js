@@ -13,3 +13,7 @@ export const LOAD_GEOS_ERROR = 'FilterBarShelf/LOAD_GEOS_ERROR';
 export const SET_GEOS_FILTER = 'FilterBarShelf/SET_GEOS_FILTER';
 export const SET_INDICES_FILTER = 'FilterBarShelf/SET_INDICES_FILTER';
 export const SET_PROPTYPES_FILTER = 'FilterBarShelf/SET_PROPTYPES_FILTER';
+
+export const RESET_FILTER_BAR_SHELF = 'FilterBarShelf/RESET_FILTER_BAR_SHELF';
+export const HYDRATE_FILTER_BAR_FROM_CACHE =
+  'FilterBarShelf/HYDRATE_FILTER_BAR_FROM_CACHE';

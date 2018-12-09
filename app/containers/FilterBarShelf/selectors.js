@@ -1,55 +1,57 @@
 import { createSelector } from 'reselect';
 
-const selectFilterBarShelf = state => state.get('filterBarShelf');
+export const selectFilterBarShelf = state => state.get('filterBarShelf');
 
-const makeSelectLoading = () =>
+export const makeSelectLoading = () =>
   createSelector(selectFilterBarShelf, state => state.get('loading'));
 
-const makeSelectError = () =>
+export const makeSelectError = () =>
   createSelector(selectFilterBarShelf, state => state.get('error'));
 
-const makeSelectFilters = () =>
-  createSelector(selectFilterBarShelf, state => state.get('filters'));
+export const makeSelectFilters = () =>
+  createSelector(
+    selectFilterBarShelf,
+    state =>
+      state.get('filters') &&
+      state.get('filters').toJS instanceof Function &&
+      state.get('filters').toJS(),
+  );
 
-const makeSelectPropTypes = () =>
+export const makeSelectCurrentFilters = () =>
+  createSelector(
+    selectFilterBarShelf,
+    state =>
+      state.get('current') &&
+      state.get('current').toJS instanceof Function &&
+      state.get('current').toJS(),
+  );
+
+export const makeSelectPropTypes = () =>
   createSelector(selectFilterBarShelf, state =>
     state.getIn(['filters', 'propTypes']),
   );
 
-const makeSelectGeos = () =>
+export const makeSelectGeos = () =>
   createSelector(selectFilterBarShelf, state =>
     state.getIn(['filters', 'geos']),
   );
 
-const makeSelectIndices = () =>
+export const makeSelectIndices = () =>
   createSelector(selectFilterBarShelf, state =>
     state.getIn(['filters', 'indices']),
   );
 
-const makeSelectCurrentPropTypesFilter = () =>
-  createSelector(selectFilterBarShelf, state =>
-    state.getIn(['current', 'propTypes']),
-  );
-
-const makeSelectCurrentIndicesFilter = () =>
-  createSelector(selectFilterBarShelf, state =>
-    state.getIn(['current', 'indices']),
-  );
-
-const makeSelectCurrentGeosFilter = () =>
+export const makeSelectCurrentGeosFilter = () =>
   createSelector(selectFilterBarShelf, state =>
     state.getIn(['current', 'geos']),
   );
 
-export {
-  selectFilterBarShelf,
-  makeSelectLoading,
-  makeSelectError,
-  makeSelectFilters,
-  makeSelectPropTypes,
-  makeSelectIndices,
-  makeSelectGeos,
-  makeSelectCurrentPropTypesFilter,
-  makeSelectCurrentIndicesFilter,
-  makeSelectCurrentGeosFilter,
-};
+export const makeSelectCurrentPropTypesFilter = () =>
+  createSelector(selectFilterBarShelf, state =>
+    state.getIn(['current', 'propTypes']),
+  );
+
+export const makeSelectCurrentIndicesFilter = () =>
+  createSelector(selectFilterBarShelf, state =>
+    state.getIn(['current', 'indices']),
+  );

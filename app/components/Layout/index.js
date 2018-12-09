@@ -3,6 +3,7 @@ import rem from '../../utils/rem';
 import { mobile } from '../../utils/media';
 import { sidebarWidth } from '../../utils/sizes';
 import { bodyFont, headerFont } from '../../utils/fonts';
+import { charcoal } from '../../utils/colors';
 
 export const Container = styled.div`
   padding-left: ${rem(sidebarWidth)};
@@ -41,17 +42,18 @@ export const Title = styled.h1`
   display: block;
   text-align: left;
   width: 100%;
-  color: rgb(243, 182, 97);
+  color: ${charcoal};
   font-size: ${rem(42)};
   font-weight: bold;
   font-family: ${headerFont};
 `;
 
 export const Header = styled.h2`
-  font-size: ${rem(32)};
+  font-size: ${rem(28)};
   font-weight: 600;
   font-family: ${headerFont};
-  margin: 2em 0 0.75em;
+  margin: 0;
+  color: ${charcoal};
 `;
 
 export const SubHeader = styled.h3`

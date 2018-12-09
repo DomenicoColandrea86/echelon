@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 import rem from '../../utils/rem';
 import { navbarHeight } from '../../utils/sizes';
 import NavSeparator from './NavSeparator';
@@ -12,7 +10,7 @@ const Wrapper = styled.nav`
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  margin-right: ${rem(30)};
+  margin: 0 auto;
 `;
 
 const Link = styled(NavLink)`
@@ -48,19 +46,15 @@ const Link = styled(NavLink)`
 const NavLinks = () => (
   <Wrapper>
     <Link exact activeClassName="active" to="/">
-      <FormattedMessage {...messages.charts} />
+      Charts
     </Link>
     <NavSeparator />
     <Link activeClassName="active" to="/features">
-      <FormattedMessage {...messages.data} />
+      Features
     </Link>
     <NavSeparator />
-    <Link activeClassName="active" to="/definitions">
-      <FormattedMessage {...messages.definitions} />
-    </Link>
-    <NavSeparator />
-    <Link activeClassName="active" to="/supporting-docs">
-      <FormattedMessage {...messages.supportingDocs} />
+    <Link activeClassName="active" to="/links">
+      Links
     </Link>
   </Wrapper>
 );

@@ -1,28 +1,19 @@
 import { createSelector } from 'reselect';
 
-const selectCharts = state => state.get('charts');
+export const selectCharts = state => state.get('charts');
 
-const selectRouter = state => state.get('router');
+export const selectRouter = state => state.get('router');
 
-const makeSelectLoading = () =>
+export const makeSelectLoading = () =>
   createSelector(selectCharts, state => state.get('loading'));
 
-const makeSelectError = () =>
+export const makeSelectError = () =>
   createSelector(selectCharts, state => state.get('error'));
 
-const makeSelectTrends = () =>
+export const makeSelectTrends = () =>
   createSelector(selectCharts, state => state.get('data'));
 
-const makeSelectLocation = () =>
+export const makeSelectLocation = () =>
   createSelector(selectRouter, routerState =>
     routerState.get('location').toJS(),
   );
-
-export {
-  selectCharts,
-  selectRouter,
-  makeSelectLoading,
-  makeSelectError,
-  makeSelectTrends,
-  makeSelectLocation,
-};
