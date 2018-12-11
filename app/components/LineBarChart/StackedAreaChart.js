@@ -6,7 +6,7 @@ import XTick from './XTick';
 import YTick from './YTick';
 import XAxis from './XAxis';
 import YAxis from './YAxis';
-import Line from './Line';
+import Area from './Area';
 
 const xTicks = ({ xScale, margin, innerWidth, innerHeight, xFormat }) =>
   xScale
@@ -42,7 +42,7 @@ const yTicks = ({ yScale, height, margin, innerWidth, yFormat }) =>
         ) : null,
     );
 
-const LineBar = memo(({ data = [], options }) => (
+const StackedArea = memo(({ data = [], options }) => (
   <Svg width={options.width} height={options.height} margin={options.margin}>
     <XAxis
       ticks={xTicks(options)}
@@ -57,19 +57,19 @@ const LineBar = memo(({ data = [], options }) => (
       height={options.innerHeight}
     />
     {data.map(datum => (
-      <Line
+      <Area
         key={uid(datum)}
-        generator={options.lineGenerator}
-        source={datum.values}
+        generator={options.area}
+        source={options.stackedData}
         color={datum.color}
       />
     ))}
   </Svg>
 ));
 
-LineBar.propTypes = {
+StackedArea.propTypes = {
   data: PropTypes.any.isRequired,
   options: PropTypes.any.isRequired,
 };
 
-export default LineBar;
+export default StackedArea;

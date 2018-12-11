@@ -17,20 +17,19 @@ import Emoji from '../Emoji';
 const Wrapper = styled.nav`
   position: fixed;
   left: 0;
-  box-sizing: border-box;
+  padding: 0;
   z-index: 3;
-
   width: 100%;
   height: ${rem(navbarHeight)};
-
-  font-family: ${headerFont};
-  font-size: ${rem(15)};
-  font-weight: 500;
+  color: white;
   background: white;
+  font-weight: 500;
+  font-size: ${rem(15)};
+  font-family: ${headerFont};
+  box-sizing: border-box;
   border-bottom: 3px solid ${orange};
   transition: background 300ms ease-out;
-  color: white;
-  padding: 0;
+  box-shadow: 0 2px 2px 0 rgba(50, 50, 50, 0.2);
 `;
 
 const StartWrapper = styled.div`

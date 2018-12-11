@@ -1,22 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { charcoal } from '../../utils/colors';
+import { headerFont } from '../../utils/fonts';
 
-const Key = props => {
-  const KeyPrimitive = styled.span`
-    height: 10px;
-    width: 10px;
-    margin-right: 0.5em;
-    display: inline-block;
-    background: ${props.color};
-  `;
-  return (
-    <>
-      <KeyPrimitive />
-      {props.name}
-    </>
-  );
-};
+const KeyPrimitive = styled.span`
+  height: 10px;
+  width: 10px;
+  margin-right: 0.5em;
+  display: inline-block;
+
+  ${p =>
+    p.color &&
+    css`
+      background: ${p.color};
+    `};
+`;
+
+const KeyText = styled.span`
+  color: ${charcoal};
+  font-family: ${headerFont};
+`;
+
+const Key = ({ color, name }) => (
+  <>
+    <KeyPrimitive color={color} />
+    <KeyText>{name}</KeyText>
+  </>
+);
 
 Key.propTypes = {
   name: PropTypes.string.isRequired,

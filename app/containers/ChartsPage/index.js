@@ -13,7 +13,6 @@ import saga from './saga';
 import reducer from './reducer';
 import { Wrapper } from './styled';
 import { makeSelectTrends, makeSelectLoading } from './selectors';
-
 export class ChartsPage extends React.PureComponent {
   render() {
     const { loading, trends } = this.props;

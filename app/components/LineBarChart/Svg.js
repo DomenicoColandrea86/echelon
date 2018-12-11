@@ -1,32 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Svg = styled.svg`
   fill: #000;
   fill-opacity: 0.3;
 
-  path {
-    stroke-width: 2px;
-    fill: none;
-  }
-
-  .axis {
-    stroke: #000;
-  }
-
-  .axis-labels text {
-    fill: #000;
-    fill-opacity: 0.9;
-    font-size: 12px;
-    text-anchor: middle;
-  }
-
-  .axis-labels line {
-    stroke: #000;
-  }
-
-  .gridline {
-    opacity: 0.1;
-  }
+  ${p =>
+    p.margin &&
+    css`
+      margin: ${p.margin.top}px ${p.margin.left}px 0 ${p.margin.right}px;
+      width: calc(100% - ${p.margin.left}px - ${p.margin.right}px);
+    `};
 `;
 
 export default Svg;

@@ -1,5 +1,6 @@
 import { css } from 'styled-components';
 import { meatBrown, darkMeatBrown } from '../../utils/colors';
+import { bodyFont } from '../../utils/fonts';
 
 const buttonStyles = css`
   display: inline-block;
@@ -17,7 +18,7 @@ const buttonStyles = css`
   cursor: pointer;
   outline: 0;
   text-transform: uppercase;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: ${bodyFont};
   font-weight: bold;
   font-size: 16px;
 

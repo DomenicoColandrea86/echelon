@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  margin: 0;
   display: block;
+  margin: 0 25px;
 `;
 
 export default Wrapper;

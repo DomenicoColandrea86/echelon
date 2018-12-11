@@ -2,13 +2,12 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { mobile } from '../../utils/media';
 import { sidebarWidth } from '../../utils/sizes';
-import rem from '../../utils/rem';
 import Greeting from '../Greeting';
 
 const wrapperWidth = 300;
 
 const Wrapper = styled.section`
-  width: ${rem(1300)};
+  width: calc(100% - 40px);
   height: ${wrapperWidth}px;
   position: absolute;
   left: ${sidebarWidth / 2}px;
