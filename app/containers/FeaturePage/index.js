@@ -22,6 +22,33 @@ export default class FeaturePage extends React.Component {
         <Title>Features</Title>
         <List>
           <ListItem>
+            <ListItemTitle>React v16.6</ListItemTitle>
+            <p>A JavaScript library for building user interfaces</p>
+          </ListItem>
+          <ListItem>
+            <ListItemTitle>D3 v5</ListItemTitle>
+            <p>
+              D3 is a JavaScript library for visualizing data with HTML, SVG,
+              and CSS.
+            </p>
+          </ListItem>
+          <ListItem>
+            <ListItemTitle>Styled-Components</ListItemTitle>
+            <p>Visual primitives for the component age.</p>
+          </ListItem>
+          <ListItem>
+            <ListItemTitle>Redux</ListItemTitle>
+            <p>A Predictable State Container for JS Apps</p>
+          </ListItem>
+          <ListItem>
+            <ListItemTitle>Reselect</ListItemTitle>
+            <p>Selector library for Redux</p>
+          </ListItem>
+          <ListItem>
+            <ListItemTitle>Redux-Saga</ListItemTitle>
+            <p>An alternative side effect model for Redux apps</p>
+          </ListItem>
+          <ListItem>
             <ListItemTitle>Industry-standard routing</ListItemTitle>
             <p>
               Write composable CSS thats co-located with your components for
