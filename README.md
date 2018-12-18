@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/DomenicoColandrea86/not-a-trendtracker.svg?branch=master)](https://travis-ci.org/DomenicoColandrea86/not-a-trendtracker)
 [![Coverage Status](https://coveralls.io/repos/github/DomenicoColandrea86/not-a-trendtracker/badge.svg?branch=master)](https://coveralls.io/github/DomenicoColandrea86/not-a-trendtracker?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/DomenicoColandrea86/not-a-trendtracker/badge.svg?targetFile=package.json)](https://snyk.io/test/github/DomenicoColandrea86/not-a-trendtracker?targetFile=package.json)
+[![GitHub version](https://badge.fury.io/gh/DomenicoColandrea86%2Fnot-a-trendtracker.svg)](https://badge.fury.io/gh/DomenicoColandrea86%2Fnot-a-trendtracker)
 
 ## Quick start
 
