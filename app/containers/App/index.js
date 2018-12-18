@@ -19,8 +19,11 @@ class App extends React.PureComponent {
     const { isSideFolded, isMobileNavFolded } = this.state;
     return (
       <>
-        <Helmet titleTemplate="%s - TrendTracker" defaultTitle="TrendTracker">
-          <meta name="description" content="TrendTracker" />
+        <Helmet
+          titleTemplate="%s - Not-A-Trendtracker"
+          defaultTitle="Not-A-Trendtracker"
+        >
+          <meta name="description" content="Not-A-Trendtracker" />
         </Helmet>
         <Header
           isSideFolded={isSideFolded}
