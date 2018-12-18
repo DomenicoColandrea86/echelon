@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Navbar from './Navbar';
+import Navbar from './NavBar';
 import FilterBarShelf from '../../containers/FilterBarShelf/index';
 
 const Header = ({
