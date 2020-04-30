@@ -1,0 +1,38 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.14.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - antd > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - express-validation > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - react-redux > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - antd > rc-form > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - antd > rc-steps > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - antd > rc-table > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - antd > rc-tabs > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - node-plop > inquirer > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - styled-components > babel-plugin-styled-components > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - antd > rc-editor-mention > rc-editor-core > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - node-plop > handlebars > async > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - styled-components > babel-plugin-styled-components > @babel/helper-annotate-as-pure > @babel/types > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - react-select > emotion > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - react-spinners > emotion > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
+    - react-spinners > react-emotion > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash:
+        patched: '2020-04-30T21:34:32.908Z'
